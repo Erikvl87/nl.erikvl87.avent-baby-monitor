@@ -1,0 +1,187 @@
+---
+title: Flow Cards
+sidebar_position: 4
+---
+
+import FlowCard from '@site/src/components/FlowCard';
+import driverFlow from '@root/drivers/baby-monitor/driver.flow.compose.json';
+
+export const card = (kind, id) => {
+  const found = driverFlow[kind].find((c) => c.id === id);
+  if (!found) throw new Error(`Flow card ${kind}/${id} not found in driver.flow.compose.json`);
+  return found;
+};
+
+# Flow Cards
+
+The **Philips Avent Baby Monitor** app provides trigger cards (When...), condition cards (And...) and action cards (Then...) for your baby monitor. Some come with Homey itself, the others are added by the app.
+
+## Homey's standard cards
+
+Many capabilities of the monitor come with Homey's standard Flow cards. You find them under your baby monitor device, like for any other device.
+
+| Capability | Cards | Notes |
+| --- | --- | --- |
+| Motion alarm | When, And | The alarm turns on, turns off, or is on. |
+| Sound detected | When, And | On SenseIQ models, crying counts as a sound too. |
+| Temperature | When, And | The temperature changed, with the temperature as a token. |
+| Night light and brightness | When, And, Then | Turn the night light on or off, or set its brightness. |
+| Lullaby playing, next, previous and volume | When, And, Then | Play or stop, skip, and set the volume. |
+| Baby in crib | When, And | SenseIQ only. Shown as the presence alarm. |
+
+:::info
+
+The motion, sound and crying alarms turn themselves off after **30 seconds**. A Flow on "turned off" runs 30 seconds after the last detection, not when your baby settled. See [Capabilities](capabilities.md#sound-detected).
+
+:::
+
+## Triggers (When...)
+
+### Baby started crying
+
+**SenseIQ only.** Runs when the SenseIQ hears your baby cry.
+
+<FlowCard data={card('triggers', 'alarm_crying_true')} />
+
+### Baby stopped crying
+
+**SenseIQ only.** Runs when the crying alarm turns off again, 30 seconds after the last cry.
+
+<FlowCard data={card('triggers', 'alarm_crying_false')} />
+
+### Breathing rate changed
+
+**SenseIQ only.** Runs when the breathing rate changes while your baby is in the crib.
+
+<FlowCard data={card('triggers', 'measure_breathing_rate_changed')} />
+
+Tokens provided:
+
+| Token | Type | Description |
+|-------|------|-------------|
+| Breaths per minute | Number | The new breathing rate. |
+
+### Privacy mode turned on
+
+Runs when privacy mode is turned on, from Homey or from the official app. The camera is off from then on.
+
+<FlowCard data={card('triggers', 'privacy_mode_true')} />
+
+### Privacy mode turned off
+
+Runs when privacy mode is turned off. The camera is on again.
+
+<FlowCard data={card('triggers', 'privacy_mode_false')} />
+
+### Lullaby changed
+
+Runs when a different sound is selected, from Homey or on the monitor.
+
+<FlowCard data={card('triggers', 'lullaby-changed')} />
+
+Tokens provided:
+
+| Token | Type | Description |
+|-------|------|-------------|
+| Lullaby | Text | The name of the sound in your language, for example "White Noise". |
+| Lullaby id | Text | The id of the sound, for example `white_noise` or `brahms_lullaby`. Handy in logic that shouldn't depend on the language. |
+
+### Monitor went offline
+
+Runs when the monitor loses its connection, for example when it is unplugged or out of Wi-Fi range. The app learns this from the Philips Avent cloud, which can take a few minutes to notice. It doesn't run when only Homey loses its internet connection.
+
+<FlowCard data={card('triggers', 'went-offline')} />
+
+### Monitor came back online
+
+Runs when the monitor is connected again after being offline.
+
+<FlowCard data={card('triggers', 'came-online')} />
+
+## Conditions (And...)
+
+All condition cards can be inverted, for example "Privacy mode isn't on".
+
+### Privacy mode is on
+
+Checks whether privacy mode is on, so the camera is off.
+
+<FlowCard data={card('conditions', 'privacy-mode-is-on')} />
+
+### Lullaby is selected
+
+Checks whether a specific sound is the selected one. It doesn't check whether it is playing; combine it with Homey's "is playing" card for that.
+
+<FlowCard data={card('conditions', 'lullaby-is')} />
+
+### Baby is crying
+
+**SenseIQ only.** Checks whether the crying alarm is on.
+
+<FlowCard data={card('conditions', 'is-crying')} />
+
+## Actions (Then...)
+
+### Play a lullaby
+
+Selects one of the 15 sounds on the monitor and starts playing it.
+
+<FlowCard data={card('actions', 'play-lullaby')} />
+
+### Stop the lullaby after a while
+
+Sets the monitor's own lullaby timer. The monitor stops the lullaby when the time is up, even if Homey is offline by then.
+
+<FlowCard data={card('actions', 'set-lullaby-timer')} />
+
+### Turn the lullaby timer off
+
+Turns the lullaby timer off. The lullaby keeps playing until it is stopped.
+
+<FlowCard data={card('actions', 'cancel-lullaby-timer')} />
+
+### Turn the night light off after a while
+
+Sets the monitor's own night light timer. The monitor turns the night light off when the time is up.
+
+<FlowCard data={card('actions', 'set-night-light-timer')} />
+
+### Turn the night light timer off
+
+Turns the night light timer off. The night light stays on until it is turned off.
+
+<FlowCard data={card('actions', 'cancel-night-light-timer')} />
+
+### Turn privacy mode on or off
+
+Turns the camera off (on) or back on (off).
+
+<FlowCard data={card('actions', 'set-privacy-mode')} />
+
+### Turn motion detection on or off
+
+Turns the monitor's motion detection on or off. This is the same as the **Motion detection** [device setting](settings/device/alerts.md), which follows along.
+
+<FlowCard data={card('actions', 'set-motion-detection')} />
+
+### Turn sound detection on or off
+
+Turns the monitor's sound detection on or off. This is the same as the **Sound detection** [device setting](settings/device/alerts.md), which follows along.
+
+<FlowCard data={card('actions', 'set-sound-detection')} />
+
+## How to Use These Cards
+
+1. In the Homey app, go to **Flows**.
+2. Either **edit an existing Flow** or **create a new Flow**:
+   * **Mobile App:** Tap the **+** icon in the top-right corner, then select **New Flow**.
+   * **Web App:** Click **New Flow** to start a new flow (basic or advanced).
+3. Pick the right section: **When** for triggers, **And** for conditions, **Then** for actions.
+4. Search for your **baby monitor's device name** (the name you gave it when adding it).
+5. Select the Flow card you want and configure the parameters.
+
+### Example: a soft light when your baby wakes up
+
+* **When:** *Sound detected* turned on (your baby monitor)
+* **And:** the time is between 22:00 and 07:00
+* **Then:** set the night light brightness to 20%, and *Turn the night light off after* 20 minutes

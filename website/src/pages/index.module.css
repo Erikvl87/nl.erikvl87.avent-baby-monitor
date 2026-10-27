@@ -1,0 +1,97 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.disclaimer {
+  background-color: #e0ecf5;
+  color: #2b3f5a;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #98c1d9;
+}
+
+.disclaimer strong {
+  color: #2b3f5a;
+}
+
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #e0ecf5 0%, #f5f9fc 100%);
+  color: #2b3f5a;
+}
+
+.heroWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.heroContent {
+  flex: 1 1 0;
+  text-align: center;
+  max-width: 700px;
+}
+
+.heroImage {
+  width: 180px;
+  border-radius: 24px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 40px rgba(43, 63, 90, 0.2);
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+
+  .heroWrapper {
+    flex-direction: column;
+  }
+
+  .heroContent {
+    text-align: center;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttons :global(.button--secondary) {
+  color: #ffffff;
+  background-color: #3d5a80;
+  border-color: #3d5a80;
+  font-weight: 600;
+}
+
+.buttons :global(.button--secondary:hover) {
+  background-color: #2b3f5a;
+  border-color: #2b3f5a;
+  color: #ffffff;
+}
+
+.heroDescription {
+  margin: 1rem auto 1.5rem;
+  max-width: 800px;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.heroDescription a {
+  color: #3d5a80;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.heroDescription a:hover {
+  color: #2b3f5a;
+}

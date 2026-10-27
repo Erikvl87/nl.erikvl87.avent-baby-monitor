@@ -1,0 +1,139 @@
+{
+	"name": {
+		"en": "Baby Monitor",
+		"nl": "Babyfoon"
+	},
+	"class": "camera",
+	"capabilities": [
+		"measure_temperature",
+		"alarm_motion",
+		"alarm_noise",
+		"onoff",
+		"dim",
+		"speaker_playing",
+		"speaker_prev",
+		"speaker_next",
+		"lullaby_track",
+		"volume_set",
+		"privacy_mode",
+		"measure_signal_strength"
+	],
+	"capabilitiesOptions": {
+		"onoff": {
+			"title": {
+				"en": "Night light",
+				"nl": "Nachtlampje"
+			}
+		},
+		"dim": {
+			"title": {
+				"en": "Night light brightness",
+				"nl": "Helderheid nachtlampje"
+			},
+			"min": 0.01
+		},
+		"speaker_playing": {
+			"title": {
+				"en": "Lullaby playing",
+				"nl": "Slaapliedje speelt"
+			}
+		},
+		"speaker_prev": {
+			"title": {
+				"en": "Previous lullaby",
+				"nl": "Vorig slaapliedje"
+			}
+		},
+		"speaker_next": {
+			"title": {
+				"en": "Next lullaby",
+				"nl": "Volgend slaapliedje"
+			}
+		},
+		"volume_set": {
+			"title": {
+				"en": "Lullaby volume",
+				"nl": "Volume slaapliedje"
+			},
+			"min": 0.01
+		},
+		"alarm_noise": {
+			"title": {
+				"en": "Sound detected",
+				"nl": "Geluid gedetecteerd"
+			}
+		},
+		"alarm_presence": {
+			"title": {
+				"en": "Baby in crib",
+				"nl": "Baby in bedje"
+			},
+			"titleTrue": {
+				"en": "In crib",
+				"nl": "In bedje"
+			},
+			"titleFalse": {
+				"en": "Not in crib",
+				"nl": "Niet in bedje"
+			}
+		},
+		"measure_signal_strength": {
+			"title": {
+				"en": "Wi-Fi signal",
+				"nl": "Wifi-signaal"
+			},
+			"units": {
+				"en": "%",
+				"nl": "%"
+			},
+			"decimals": 0,
+			"min": 0,
+			"max": 100
+		}
+	},
+	"platforms": [
+		"local"
+	],
+	"connectivity": [
+		"cloud",
+		"lan"
+	],
+	"images": {
+		"small": "{{driverAssetsPath}}/images/small.png",
+		"large": "{{driverAssetsPath}}/images/large.png",
+		"xlarge": "{{driverAssetsPath}}/images/xlarge.png"
+	},
+	"pair": [
+		{
+			"id": "login"
+		},
+		{
+			"id": "code",
+			"navigation": {
+				"prev": "login"
+			}
+		},
+		{
+			"id": "list_devices",
+			"template": "list_devices",
+			"navigation": {
+				"next": "add_devices"
+			}
+		},
+		{
+			"id": "add_devices",
+			"template": "add_devices"
+		}
+	],
+	"repair": [
+		{
+			"id": "login"
+		},
+		{
+			"id": "code",
+			"navigation": {
+				"prev": "login"
+			}
+		}
+	]
+}

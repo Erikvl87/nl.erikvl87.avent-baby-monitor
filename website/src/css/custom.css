@@ -1,0 +1,251 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+/* Brand colors, from the app's brandColor in .homeycompose/app.json:
+   Night blue: #3d5a80
+   Soft blue: #98c1d9
+   Pale sky: #e0ecf5
+*/
+:root {
+  --ifm-color-primary: #3d5a80;
+  --ifm-color-primary-dark: #375173;
+  --ifm-color-primary-darker: #344d6d;
+  --ifm-color-primary-darkest: #2b3f5a;
+  --ifm-color-primary-light: #43638d;
+  --ifm-color-primary-lighter: #466793;
+  --ifm-color-primary-lightest: #4f74a6;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(61, 90, 128, 0.1);
+  --avent-soft-blue: #98c1d9;
+  --avent-pale-sky: #e0ecf5;
+  --ifm-link-color: #3d5a80;
+  --ifm-link-hover-color: #2b3f5a;
+  --ifm-link-decoration: underline;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+html[data-theme='dark'] {
+  --ifm-color-primary: #98c1d9;
+  --ifm-color-primary-dark: #7fb2cf;
+  --ifm-color-primary-darker: #72aaca;
+  --ifm-color-primary-darkest: #4c93bb;
+  --ifm-color-primary-light: #b1d0e3;
+  --ifm-color-primary-lighter: #bed8e8;
+  --ifm-color-primary-lightest: #e4eff6;
+  --docusaurus-highlighted-code-line-bg: rgba(152, 193, 217, 0.15);
+  --ifm-background-color: #121a24;
+  --ifm-background-surface-color: #1b2635;
+  --ifm-link-color: #b1d0e3;
+  --ifm-link-hover-color: #e4eff6;
+}
+
+/* Navbar in the app's night blue */
+.navbar {
+  background-color: #3d5a80;
+  --ifm-navbar-link-color: #ffffff;
+  --ifm-navbar-link-hover-color: #98c1d9;
+}
+
+.navbar__title {
+  color: #ffffff;
+}
+
+.navbar__brand {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.navbar__brand:hover {
+  color: #98c1d9 !important;
+  text-decoration: none !important;
+}
+
+.navbar__brand:hover .navbar__title {
+  color: #98c1d9;
+}
+
+/* The icon is drawn in black; show it white on the blue navbar */
+.navbar__logo img {
+  filter: brightness(0) invert(1);
+}
+
+.navbar__link {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  color: #98c1d9;
+  text-decoration: none;
+}
+
+/* Theme toggle icon - make it visible on the blue navbar */
+.navbar [class*='toggle'] {
+  color: #ffffff;
+}
+
+.navbar [class*='toggle']:hover {
+  color: #98c1d9;
+}
+
+[data-theme='dark'] .navbar [class*='toggle'] {
+  color: #ffffff;
+}
+
+/* Dark mode navbar - keep consistent */
+[data-theme='dark'] .navbar {
+  background-color: #2b3f5a;
+}
+
+/* Mobile menu fixes - ensure text is visible on white background */
+@media (max-width: 996px) {
+  /* Mobile sidebar has white background, so text needs to be dark */
+  .navbar-sidebar {
+    background-color: #ffffff;
+  }
+
+  [data-theme='dark'] .navbar-sidebar {
+    background-color: #121a24;
+  }
+
+  /* The logo goes back to dark on the white sidebar */
+  .navbar-sidebar .navbar__logo img {
+    filter: none;
+  }
+
+  [data-theme='dark'] .navbar-sidebar .navbar__logo img {
+    filter: brightness(0) invert(1);
+  }
+
+  /* Make navbar title and links dark on mobile sidebar */
+  .navbar-sidebar .navbar__brand,
+  .navbar-sidebar .navbar__title,
+  .navbar-sidebar .navbar__link {
+    color: #3d5a80 !important;
+  }
+
+  .navbar-sidebar .navbar__brand:hover,
+  .navbar-sidebar .navbar__title:hover,
+  .navbar-sidebar .navbar__link:hover,
+  .navbar-sidebar .navbar__link--active {
+    color: #2b3f5a !important;
+  }
+
+  /* Theme toggle needs to be visible on mobile sidebar */
+  .navbar-sidebar [class*='toggle'] {
+    color: #3d5a80 !important;
+  }
+
+  .navbar-sidebar [class*='toggle']:hover {
+    color: #2b3f5a !important;
+  }
+
+  /* Dark mode mobile sidebar */
+  [data-theme='dark'] .navbar-sidebar .navbar__brand,
+  [data-theme='dark'] .navbar-sidebar .navbar__title,
+  [data-theme='dark'] .navbar-sidebar .navbar__link {
+    color: #ffffff !important;
+  }
+
+  [data-theme='dark'] .navbar-sidebar .navbar__brand:hover,
+  [data-theme='dark'] .navbar-sidebar .navbar__title:hover,
+  [data-theme='dark'] .navbar-sidebar .navbar__link:hover,
+  [data-theme='dark'] .navbar-sidebar .navbar__link--active {
+    color: #98c1d9 !important;
+  }
+
+  [data-theme='dark'] .navbar-sidebar [class*='toggle'] {
+    color: #ffffff !important;
+  }
+
+  [data-theme='dark'] .navbar-sidebar [class*='toggle']:hover {
+    color: #98c1d9 !important;
+  }
+}
+
+/* Sidebar links - no underline for cleaner look */
+.menu__link {
+  text-decoration: none;
+}
+
+.menu__link:hover {
+  text-decoration: none;
+}
+
+/* Table of contents links - no underline */
+.table-of-contents__link {
+  text-decoration: none;
+}
+
+.table-of-contents__link:hover {
+  text-decoration: none;
+}
+
+/* Footer with a pale sky background */
+.footer {
+  background-color: #e0ecf5;
+  --ifm-footer-background-color: #e0ecf5;
+  --ifm-footer-color: #3d5a80;
+  --ifm-footer-link-color: #3d5a80;
+}
+
+.footer__title {
+  color: #3d5a80;
+}
+
+.footer__link-item {
+  color: #3d5a80;
+}
+
+.footer__link-item:hover {
+  color: #2b3f5a;
+}
+
+.footer__copyright {
+  color: #4f74a6;
+}
+
+/* Dark mode footer */
+[data-theme='dark'] .footer {
+  background-color: #1b2635;
+  --ifm-footer-background-color: #1b2635;
+  --ifm-footer-color: #e0ecf5;
+  --ifm-footer-link-color: #e0ecf5;
+}
+
+[data-theme='dark'] .footer__title,
+[data-theme='dark'] .footer__link-item {
+  color: #e0ecf5;
+}
+
+[data-theme='dark'] .footer__link-item:hover {
+  color: #98c1d9;
+}
+
+[data-theme='dark'] .footer__copyright {
+  color: #98c1d9;
+}
+
+/* Subtle pagination buttons */
+.pagination-nav__link {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background-color: var(--ifm-background-surface-color);
+  text-decoration: none;
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-emphasis-400);
+  background-color: var(--ifm-color-emphasis-100);
+  text-decoration: none;
+}
+
+.pagination-nav__label,
+.pagination-nav__sublabel {
+  color: var(--ifm-color-content);
+  text-decoration: none;
+}

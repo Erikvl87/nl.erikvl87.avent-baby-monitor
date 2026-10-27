@@ -1,0 +1,17 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Breathing rate",
+    "nl": "Ademhaling"
+  },
+  "units": {
+    "en": "breaths/min",
+    "nl": "ademh./min"
+  },
+  "decimals": 0,
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "insights": true,
+  "icon": "/assets/capabilities/breathing-rate.svg"
+}

@@ -1,0 +1,47 @@
+{
+	"device": {
+		"unknownModel": "Onbekend model",
+		"unavailable": {
+			"apiError": "Kan de Philips Avent-cloud niet bereiken",
+			"offline": "De babyfoon is offline",
+			"sessionExpired": "Afgemeld bij Philips Avent. Gebruik Repareren om opnieuw aan te melden."
+		}
+	},
+	"errors": {
+		"wrongPassword": "Het e-mailadres of wachtwoord klopt niet.",
+		"wrongCode": "Die code klopt niet of is verlopen. Vraag een nieuwe aan en probeer het opnieuw.",
+		"loginFailed": "Aanmelden is mislukt (__code__).",
+		"noCameras": "Er zijn geen babyfoons gevonden op dit account.",
+		"differentAccount": "Deze babyfoon staat niet op dat account. Meld je aan met het account waarmee je hem hebt toegevoegd.",
+		"unknownLullaby": "Onbekend slaapliedje.",
+		"unknownCatalogue": "De lijst met slaapliedjes van deze babyfoon is nog niet bekend bij de app, dus je kunt geen slaapliedje kiezen. Afspelen, stoppen, volgende en vorige werken wel.",
+		"noPendingLogin": "Begin opnieuw bij de eerste stap.",
+		"videoNeedsRepair": "Gebruik Repareren op dit apparaat en meld je opnieuw aan om video aan te zetten.",
+		"privacyMode": "Privacymodus staat aan, dus de camera staat uit.",
+		"videoFailed": "De camera startte de video niet. Probeer het zo nog eens."
+	},
+	"settings": {
+		"debug": {
+			"label": "Uitgebreide diagnostiek",
+			"hint": "Voeg extra details toe aan crash- en diagnoserapporten.",
+			"footer": "Zet dit aan voordat je een probleem meldt bij de ontwikkelaar."
+		}
+	},
+	"signIn": {
+		"heading": "Meld je aan met je Philips Avent Baby Monitor+-account",
+		"email": "E-mailadres",
+		"password": "Wachtwoord",
+		"country": "Land",
+		"countryHint": "Het land dat je koos toen je het account aanmaakte.",
+		"sendCode": "Verificatiecode sturen",
+		"codeHeading": "Vul de verificatiecode in",
+		"sentTo": "Philips Avent heeft een code van 6 cijfers gemaild naar __email__.",
+		"code": "Verificatiecode",
+		"signIn": "Aanmelden",
+		"resend": "Stuur een nieuwe code",
+		"resent": "Er is een nieuwe code onderweg."
+	},
+	"video": {
+		"title": "Camera"
+	}
+}

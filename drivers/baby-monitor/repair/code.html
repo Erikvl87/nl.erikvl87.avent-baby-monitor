@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+	<div style="text-align: center; margin: 16px 0;">
+		<img src="logo.svg" style="max-width: 120px;" />
+	</div>
+
+	<form class="homey-form" id="avent-code-form">
+		<p id="avent-code-sent-to"></p>
+
+		<div class="homey-form-group">
+			<label class="homey-form-label" for="avent-code-code" id="avent-code-code-label"></label>
+			<input id="avent-code-code" class="homey-form-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" required />
+		</div>
+
+		<div class="homey-form-group">
+			<div id="avent-code-error" style="color: #e74c3c; display: none;"></div>
+			<div id="avent-code-info" style="display: none;"></div>
+		</div>
+
+		<button type="submit" class="homey-button-primary-full" id="avent-code-submit" data-i18n="signIn.signIn"></button>
+		<button type="button" class="homey-button-transparent" id="avent-code-resend" style="width: 100%; margin-top: 8px;"></button>
+	</form>
+
+	<script type="text/javascript">
+		// Homey loads every custom pair view into the same page, so ids are prefixed per view and the script
+		// keeps its variables to itself.
+		(function() {
+			// Script errors in this screen would otherwise only show as a blank page; send them to the app log.
+			window.addEventListener('error', function(event) {
+				Homey.emit('viewLog', 'code view error: ' + event.message, function() {});
+			});
+			// Homey fills in data-i18n itself; this covers a Homey app that doesn't.
+			var submitButton = document.getElementById('avent-code-submit');
+			if (!submitButton.textContent.trim()) submitButton.textContent = Homey.__('signIn.signIn');
+			Homey.setTitle(Homey.__('signIn.codeHeading'));
+			document.getElementById('avent-code-code-label').textContent = Homey.__('signIn.code');
+			document.getElementById('avent-code-resend').textContent = Homey.__('signIn.resend');
+
+			var error = document.getElementById('avent-code-error');
+			var info = document.getElementById('avent-code-info');
+
+			function showError(err) {
+				info.style.display = 'none';
+				error.textContent = err.message || String(err);
+				error.style.display = 'block';
+			}
+
+			Homey.emit('getLoginDefaults', null, function(err, defaults) {
+				if (!err && defaults && defaults.email) {
+					document.getElementById('avent-code-sent-to').textContent = Homey.__('signIn.sentTo', { email: defaults.email });
+				}
+			});
+			document.getElementById('avent-code-code').focus();
+
+			document.getElementById('avent-code-form').addEventListener('submit', function(e) {
+				e.preventDefault();
+				var submit = document.getElementById('avent-code-submit');
+				error.style.display = 'none';
+				submit.classList.add('is-loading');
+
+				Homey.emit('verify', { code: document.getElementById('avent-code-code').value.trim() }, function(err, result) {
+					submit.classList.remove('is-loading');
+					if (err) return showError(err);
+					// While repairing, signing in is all there is to do.
+					if (result && result.done) return Homey.done();
+					Homey.showView('list_devices');
+				});
+			});
+
+			document.getElementById('avent-code-resend').addEventListener('click', function() {
+				error.style.display = 'none';
+				Homey.emit('resend', null, function(err) {
+					if (err) return showError(err);
+					info.textContent = Homey.__('signIn.resent');
+					info.style.display = 'block';
+				});
+			});
+		})();
+	</script>
+</body>
+</html>

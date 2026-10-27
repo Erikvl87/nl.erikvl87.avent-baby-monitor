@@ -1,0 +1,232 @@
+[
+	{
+		"type": "group",
+		"label": {
+			"en": "Alerts",
+			"nl": "Meldingen"
+		},
+		"children": [
+			{
+				"id": "motion_detection",
+				"type": "checkbox",
+				"value": true,
+				"label": {
+					"en": "Motion detection",
+					"nl": "Bewegingsdetectie"
+				},
+				"hint": {
+					"en": "Whether the monitor watches for motion. Motion alerts in Homey only work while this is on.",
+					"nl": "Of de babyfoon op beweging let. Bewegingsmeldingen in Homey werken alleen als dit aan staat."
+				}
+			},
+			{
+				"id": "motion_sensitivity",
+				"type": "dropdown",
+				"value": "medium",
+				"label": {
+					"en": "Motion sensitivity",
+					"nl": "Gevoeligheid beweging"
+				},
+				"values": [
+					{
+						"id": "low",
+						"label": {
+							"en": "Low",
+							"nl": "Laag"
+						}
+					},
+					{
+						"id": "medium",
+						"label": {
+							"en": "Medium",
+							"nl": "Gemiddeld"
+						}
+					},
+					{
+						"id": "high",
+						"label": {
+							"en": "High",
+							"nl": "Hoog"
+						}
+					}
+				]
+			},
+			{
+				"id": "sound_detection",
+				"type": "checkbox",
+				"value": true,
+				"label": {
+					"en": "Sound detection",
+					"nl": "Geluidsdetectie"
+				},
+				"hint": {
+					"en": "Whether the monitor listens for sound. Sound alerts in Homey only work while this is on.",
+					"nl": "Of de babyfoon op geluid let. Geluidsmeldingen in Homey werken alleen als dit aan staat."
+				}
+			},
+			{
+				"id": "sound_sensitivity",
+				"type": "dropdown",
+				"value": "medium",
+				"label": {
+					"en": "Sound sensitivity",
+					"nl": "Gevoeligheid geluid"
+				},
+				"values": [
+					{
+						"id": "low",
+						"label": {
+							"en": "Low",
+							"nl": "Laag"
+						}
+					},
+					{
+						"id": "medium",
+						"label": {
+							"en": "Medium",
+							"nl": "Gemiddeld"
+						}
+					},
+					{
+						"id": "high",
+						"label": {
+							"en": "High",
+							"nl": "Hoog"
+						}
+					}
+				]
+			}
+		]
+	},
+	{
+		"type": "group",
+		"label": {
+			"en": "Monitor",
+			"nl": "Babyfoon"
+		},
+		"children": [
+			{
+				"id": "status_led",
+				"type": "checkbox",
+				"value": true,
+				"label": {
+					"en": "Status light",
+					"nl": "Statuslampje"
+				},
+				"hint": {
+					"en": "The small light on the front of the monitor.",
+					"nl": "Het kleine lampje aan de voorkant van de babyfoon."
+				}
+			}
+		]
+	},
+	{
+		"type": "group",
+		"label": {
+			"en": "Video",
+			"nl": "Video"
+		},
+		"children": [
+			{
+				"id": "video_quality",
+				"type": "dropdown",
+				"value": "hd",
+				"label": {
+					"en": "Video quality",
+					"nl": "Videokwaliteit"
+				},
+				"hint": {
+					"en": "HD is sharper, SD sends far less data, which can play more smoothly on a busy or weak Wi-Fi connection. Applies the next time you open the camera.",
+					"nl": "HD is scherper, SD verstuurt veel minder data, wat soepeler kan spelen op druk of zwak wifi. Geldt vanaf de volgende keer dat je de camera opent."
+				},
+				"values": [
+					{
+						"id": "hd",
+						"label": {
+							"en": "HD",
+							"nl": "HD"
+						}
+					},
+					{
+						"id": "sd",
+						"label": {
+							"en": "SD",
+							"nl": "SD"
+						}
+					}
+				]
+			},
+			{
+				"id": "video_relay",
+				"type": "checkbox",
+				"value": true,
+				"label": {
+					"en": "Smooth video",
+					"nl": "Vloeiende video"
+				},
+				"hint": {
+					"en": "The monitors send video with timing that makes it stutter. With this on, Homey passes the video through the app, which fixes the timing. Uses some extra memory and processor time on Homey while you watch. Turn it off to stream straight from the monitor.",
+					"nl": "De babyfoons versturen video met een timing waardoor hij hapert. Met dit aan stuurt Homey de video door de app, die de timing herstelt. Kost wat extra geheugen en processortijd op Homey zolang je kijkt. Zet het uit om rechtstreeks van de babyfoon te streamen."
+				}
+			}
+		]
+	},
+	{
+		"type": "group",
+		"label": {
+			"en": "Connection",
+			"nl": "Verbinding"
+		},
+		"children": [
+			{
+				"id": "local_connection",
+				"type": "checkbox",
+				"value": true,
+				"label": {
+					"en": "Local connection",
+					"nl": "Lokale verbinding"
+				},
+				"hint": {
+					"en": "Also listen to the monitor directly on your home network. Motion and sound alerts arrive within seconds this way, and on the SCD973 and SCD923 they only arrive this way. Turn it off if the monitor misbehaves.",
+					"nl": "Luister ook rechtstreeks naar de babyfoon op je thuisnetwerk. Zo komen bewegings- en geluidsmeldingen binnen enkele seconden binnen, en bij de SCD973 en SCD923 alleen zo. Zet dit uit als de babyfoon zich vreemd gedraagt."
+				}
+			}
+		]
+	},
+	{
+		"type": "group",
+		"label": {
+			"en": "Device information",
+			"nl": "Apparaatinformatie"
+		},
+		"children": [
+			{
+				"id": "model",
+				"type": "label",
+				"value": "",
+				"label": {
+					"en": "Model",
+					"nl": "Model"
+				}
+			},
+			{
+				"id": "product_id",
+				"type": "label",
+				"value": "",
+				"label": {
+					"en": "Product id",
+					"nl": "Product-id"
+				}
+			},
+			{
+				"id": "firmware",
+				"type": "label",
+				"value": "",
+				"label": {
+					"en": "Firmware",
+					"nl": "Firmware"
+				}
+			}
+		]
+	}
+]

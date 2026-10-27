@@ -1,0 +1,119 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Lullaby",
+    "nl": "Slaapliedje"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "picker",
+  "insights": false,
+  "icon": "/assets/capabilities/lullaby-track.svg",
+  "values": [
+    {
+      "id": "baa_baa_black_sheep",
+      "title": {
+        "en": "Baa Baa Black Sheep",
+        "nl": "Baa Baa Black Sheep"
+      }
+    },
+    {
+      "id": "brahms_lullaby",
+      "title": {
+        "en": "Brahms' Lullaby",
+        "nl": "Wiegenlied van Brahms"
+      }
+    },
+    {
+      "id": "rock_a_bye_baby",
+      "title": {
+        "en": "Rock-a-Bye Baby",
+        "nl": "Rock-a-Bye Baby"
+      }
+    },
+    {
+      "id": "golden_slumbers",
+      "title": {
+        "en": "Golden Slumbers",
+        "nl": "Golden Slumbers"
+      }
+    },
+    {
+      "id": "hush_little_baby",
+      "title": {
+        "en": "Hush Little Baby",
+        "nl": "Hush Little Baby"
+      }
+    },
+    {
+      "id": "mothers_shh",
+      "title": {
+        "en": "Mother's Shh",
+        "nl": "Moeders sst"
+      }
+    },
+    {
+      "id": "calming_river",
+      "title": {
+        "en": "Calming River",
+        "nl": "Kalmerende rivier"
+      }
+    },
+    {
+      "id": "heartbeat",
+      "title": {
+        "en": "Heartbeat",
+        "nl": "Hartslag"
+      }
+    },
+    {
+      "id": "vacuum_cleaner",
+      "title": {
+        "en": "Vacuum Cleaner",
+        "nl": "Stofzuiger"
+      }
+    },
+    {
+      "id": "white_noise",
+      "title": {
+        "en": "White Noise",
+        "nl": "Witte ruis"
+      }
+    },
+    {
+      "id": "garden_bird_song",
+      "title": {
+        "en": "Garden Bird Song",
+        "nl": "Vogelzang in de tuin"
+      }
+    },
+    {
+      "id": "valley_wind",
+      "title": {
+        "en": "Valley Wind",
+        "nl": "Wind in het dal"
+      }
+    },
+    {
+      "id": "ocean_shore",
+      "title": {
+        "en": "Ocean Shore",
+        "nl": "Branding"
+      }
+    },
+    {
+      "id": "night_time_nature",
+      "title": {
+        "en": "Night-time Nature",
+        "nl": "Natuur bij nacht"
+      }
+    },
+    {
+      "id": "rain_shower",
+      "title": {
+        "en": "Rain Shower",
+        "nl": "Regenbui"
+      }
+    }
+  ]
+}
