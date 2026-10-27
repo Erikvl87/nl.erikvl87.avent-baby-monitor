@@ -1,0 +1,1399 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "nl.erikvl87.avent-baby-monitor",
+  "version": "0.1.0",
+  "support": "https://avent-baby-monitor.erikvl87.nl/",
+  "compatibility": ">=12.7.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Philips Avent Baby Monitor",
+    "nl": "Philips Avent Babyfoon"
+  },
+  "brandColor": "#3d5a80",
+  "description": {
+    "en": "Peace of mind while your little one sleeps",
+    "nl": "Met een gerust hart terwijl je kleintje slaapt"
+  },
+  "category": [
+    "security"
+  ],
+  "permissions": [],
+  "tags": {
+    "en": [
+      "philips",
+      "avent",
+      "baby monitor",
+      "baby",
+      "nursery",
+      "senseiq",
+      "lullaby",
+      "night light"
+    ],
+    "nl": [
+      "philips",
+      "avent",
+      "babyfoon",
+      "baby",
+      "babykamer",
+      "senseiq",
+      "slaapliedje",
+      "nachtlampje"
+    ]
+  },
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Erik van Leeuwen",
+    "email": "homey@erikvl87.nl"
+  },
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "erikvl87"
+      }
+    }
+  },
+  "esm": true,
+  "flow": {
+    "triggers": [
+      {
+        "id": "alarm_crying_true",
+        "title": {
+          "en": "Baby started crying",
+          "nl": "Baby begon te huilen"
+        },
+        "hint": {
+          "en": "SenseIQ heard the baby cry.",
+          "nl": "SenseIQ hoorde de baby huilen."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor&capabilities=alarm_crying"
+          }
+        ]
+      },
+      {
+        "id": "alarm_crying_false",
+        "title": {
+          "en": "Baby stopped crying",
+          "nl": "Baby stopte met huilen"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor&capabilities=alarm_crying"
+          }
+        ]
+      },
+      {
+        "id": "measure_breathing_rate_changed",
+        "title": {
+          "en": "Breathing rate changed",
+          "nl": "Ademhaling veranderd"
+        },
+        "hint": {
+          "en": "SenseIQ reports the breathing rate while the baby is in the crib.",
+          "nl": "SenseIQ meldt de ademhaling zolang de baby in het bedje ligt."
+        },
+        "tokens": [
+          {
+            "name": "measure_breathing_rate",
+            "type": "number",
+            "title": {
+              "en": "Breaths per minute",
+              "nl": "Ademhalingen per minuut"
+            },
+            "example": 32
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor&capabilities=alarm_crying"
+          }
+        ]
+      },
+      {
+        "id": "privacy_mode_true",
+        "title": {
+          "en": "Privacy mode turned on",
+          "nl": "Privacymodus aangezet"
+        },
+        "hint": {
+          "en": "The camera was turned off.",
+          "nl": "De camera is uitgezet."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          }
+        ]
+      },
+      {
+        "id": "privacy_mode_false",
+        "title": {
+          "en": "Privacy mode turned off",
+          "nl": "Privacymodus uitgezet"
+        },
+        "hint": {
+          "en": "The camera was turned on.",
+          "nl": "De camera is aangezet."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          }
+        ]
+      },
+      {
+        "id": "lullaby-changed",
+        "title": {
+          "en": "Lullaby changed",
+          "nl": "Slaapliedje veranderd"
+        },
+        "hint": {
+          "en": "Runs when a different sound is selected, from Homey or on the monitor.",
+          "nl": "Wordt uitgevoerd als er een ander geluid gekozen is, vanuit Homey of op de babyfoon."
+        },
+        "tokens": [
+          {
+            "name": "name",
+            "type": "string",
+            "title": {
+              "en": "Lullaby",
+              "nl": "Slaapliedje"
+            },
+            "example": {
+              "en": "White Noise",
+              "nl": "Witte ruis"
+            }
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "title": {
+              "en": "Lullaby id",
+              "nl": "Slaapliedje-id"
+            },
+            "example": "white_noise"
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          }
+        ]
+      },
+      {
+        "id": "went-offline",
+        "title": {
+          "en": "Monitor went offline",
+          "nl": "Babyfoon ging offline"
+        },
+        "hint": {
+          "en": "Runs when the monitor loses its connection, for example when it is unplugged or out of Wi-Fi range. Based on what the Philips Avent cloud reports, so it can take a few minutes.",
+          "nl": "Wordt uitgevoerd als de babyfoon zijn verbinding verliest, bijvoorbeeld als de stekker eruit is of de wifi buiten bereik is. Gebaseerd op wat de Philips Avent-cloud meldt, dus het kan een paar minuten duren."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          }
+        ]
+      },
+      {
+        "id": "came-online",
+        "title": {
+          "en": "Monitor came back online",
+          "nl": "Babyfoon is weer online"
+        },
+        "hint": {
+          "en": "Runs when the monitor is connected again after being offline.",
+          "nl": "Wordt uitgevoerd als de babyfoon weer verbonden is nadat hij offline was."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "privacy-mode-is-on",
+        "title": {
+          "en": "Privacy mode !{{is|isn't}} on",
+          "nl": "Privacymodus !{{is|is niet}} aan"
+        },
+        "hint": {
+          "en": "Checks whether the camera is turned off.",
+          "nl": "Controleert of de camera uit staat."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          }
+        ]
+      },
+      {
+        "id": "lullaby-is",
+        "title": {
+          "en": "A lullaby !{{is|isn't}} selected",
+          "nl": "Een slaapliedje !{{is|is niet}} gekozen"
+        },
+        "titleFormatted": {
+          "en": "[[lullaby]] !{{is|isn't}} the selected lullaby",
+          "nl": "[[lullaby]] !{{is|is niet}} het gekozen slaapliedje"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          },
+          {
+            "type": "dropdown",
+            "name": "lullaby",
+            "values": [
+              {
+                "id": "baa_baa_black_sheep",
+                "label": {
+                  "en": "Baa Baa Black Sheep",
+                  "nl": "Baa Baa Black Sheep"
+                }
+              },
+              {
+                "id": "brahms_lullaby",
+                "label": {
+                  "en": "Brahms' Lullaby",
+                  "nl": "Wiegenlied van Brahms"
+                }
+              },
+              {
+                "id": "rock_a_bye_baby",
+                "label": {
+                  "en": "Rock-a-Bye Baby",
+                  "nl": "Rock-a-Bye Baby"
+                }
+              },
+              {
+                "id": "golden_slumbers",
+                "label": {
+                  "en": "Golden Slumbers",
+                  "nl": "Golden Slumbers"
+                }
+              },
+              {
+                "id": "hush_little_baby",
+                "label": {
+                  "en": "Hush Little Baby",
+                  "nl": "Hush Little Baby"
+                }
+              },
+              {
+                "id": "mothers_shh",
+                "label": {
+                  "en": "Mother's Shh",
+                  "nl": "Moeders sst"
+                }
+              },
+              {
+                "id": "calming_river",
+                "label": {
+                  "en": "Calming River",
+                  "nl": "Kalmerende rivier"
+                }
+              },
+              {
+                "id": "heartbeat",
+                "label": {
+                  "en": "Heartbeat",
+                  "nl": "Hartslag"
+                }
+              },
+              {
+                "id": "vacuum_cleaner",
+                "label": {
+                  "en": "Vacuum Cleaner",
+                  "nl": "Stofzuiger"
+                }
+              },
+              {
+                "id": "white_noise",
+                "label": {
+                  "en": "White Noise",
+                  "nl": "Witte ruis"
+                }
+              },
+              {
+                "id": "garden_bird_song",
+                "label": {
+                  "en": "Garden Bird Song",
+                  "nl": "Vogelzang in de tuin"
+                }
+              },
+              {
+                "id": "valley_wind",
+                "label": {
+                  "en": "Valley Wind",
+                  "nl": "Wind in het dal"
+                }
+              },
+              {
+                "id": "ocean_shore",
+                "label": {
+                  "en": "Ocean Shore",
+                  "nl": "Branding"
+                }
+              },
+              {
+                "id": "night_time_nature",
+                "label": {
+                  "en": "Night-time Nature",
+                  "nl": "Natuur bij nacht"
+                }
+              },
+              {
+                "id": "rain_shower",
+                "label": {
+                  "en": "Rain Shower",
+                  "nl": "Regenbui"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "is-crying",
+        "title": {
+          "en": "Baby !{{is|isn't}} crying",
+          "nl": "Baby !{{huilt|huilt niet}}"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor&capabilities=alarm_crying"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "play-lullaby",
+        "title": {
+          "en": "Play a lullaby",
+          "nl": "Speel een slaapliedje"
+        },
+        "titleFormatted": {
+          "en": "Play [[lullaby]]",
+          "nl": "Speel [[lullaby]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          },
+          {
+            "type": "dropdown",
+            "name": "lullaby",
+            "values": [
+              {
+                "id": "baa_baa_black_sheep",
+                "label": {
+                  "en": "Baa Baa Black Sheep",
+                  "nl": "Baa Baa Black Sheep"
+                }
+              },
+              {
+                "id": "brahms_lullaby",
+                "label": {
+                  "en": "Brahms' Lullaby",
+                  "nl": "Wiegenlied van Brahms"
+                }
+              },
+              {
+                "id": "rock_a_bye_baby",
+                "label": {
+                  "en": "Rock-a-Bye Baby",
+                  "nl": "Rock-a-Bye Baby"
+                }
+              },
+              {
+                "id": "golden_slumbers",
+                "label": {
+                  "en": "Golden Slumbers",
+                  "nl": "Golden Slumbers"
+                }
+              },
+              {
+                "id": "hush_little_baby",
+                "label": {
+                  "en": "Hush Little Baby",
+                  "nl": "Hush Little Baby"
+                }
+              },
+              {
+                "id": "mothers_shh",
+                "label": {
+                  "en": "Mother's Shh",
+                  "nl": "Moeders sst"
+                }
+              },
+              {
+                "id": "calming_river",
+                "label": {
+                  "en": "Calming River",
+                  "nl": "Kalmerende rivier"
+                }
+              },
+              {
+                "id": "heartbeat",
+                "label": {
+                  "en": "Heartbeat",
+                  "nl": "Hartslag"
+                }
+              },
+              {
+                "id": "vacuum_cleaner",
+                "label": {
+                  "en": "Vacuum Cleaner",
+                  "nl": "Stofzuiger"
+                }
+              },
+              {
+                "id": "white_noise",
+                "label": {
+                  "en": "White Noise",
+                  "nl": "Witte ruis"
+                }
+              },
+              {
+                "id": "garden_bird_song",
+                "label": {
+                  "en": "Garden Bird Song",
+                  "nl": "Vogelzang in de tuin"
+                }
+              },
+              {
+                "id": "valley_wind",
+                "label": {
+                  "en": "Valley Wind",
+                  "nl": "Wind in het dal"
+                }
+              },
+              {
+                "id": "ocean_shore",
+                "label": {
+                  "en": "Ocean Shore",
+                  "nl": "Branding"
+                }
+              },
+              {
+                "id": "night_time_nature",
+                "label": {
+                  "en": "Night-time Nature",
+                  "nl": "Natuur bij nacht"
+                }
+              },
+              {
+                "id": "rain_shower",
+                "label": {
+                  "en": "Rain Shower",
+                  "nl": "Regenbui"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set-lullaby-timer",
+        "title": {
+          "en": "Stop the lullaby after a while",
+          "nl": "Stop het slaapliedje na een tijdje"
+        },
+        "titleFormatted": {
+          "en": "Stop the lullaby after [[duration]]",
+          "nl": "Stop het slaapliedje na [[duration]]"
+        },
+        "hint": {
+          "en": "Sets the monitor's lullaby timer.",
+          "nl": "Zet de slaapliedjestimer van de babyfoon."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          },
+          {
+            "type": "dropdown",
+            "name": "duration",
+            "values": [
+              {
+                "id": "300",
+                "label": {
+                  "en": "5 minutes",
+                  "nl": "5 minuten"
+                }
+              },
+              {
+                "id": "600",
+                "label": {
+                  "en": "10 minutes",
+                  "nl": "10 minuten"
+                }
+              },
+              {
+                "id": "1200",
+                "label": {
+                  "en": "20 minutes",
+                  "nl": "20 minuten"
+                }
+              },
+              {
+                "id": "1800",
+                "label": {
+                  "en": "30 minutes",
+                  "nl": "30 minuten"
+                }
+              },
+              {
+                "id": "3600",
+                "label": {
+                  "en": "1 hour",
+                  "nl": "1 uur"
+                }
+              },
+              {
+                "id": "5400",
+                "label": {
+                  "en": "1.5 hours",
+                  "nl": "1,5 uur"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cancel-lullaby-timer",
+        "title": {
+          "en": "Turn the lullaby timer off",
+          "nl": "Zet de slaapliedjestimer uit"
+        },
+        "hint": {
+          "en": "The lullaby keeps playing until it is stopped.",
+          "nl": "Het slaapliedje blijft spelen tot het gestopt wordt."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          }
+        ]
+      },
+      {
+        "id": "set-night-light-timer",
+        "title": {
+          "en": "Turn the night light off after a while",
+          "nl": "Zet het nachtlampje na een tijdje uit"
+        },
+        "titleFormatted": {
+          "en": "Turn the night light off after [[duration]]",
+          "nl": "Zet het nachtlampje uit na [[duration]]"
+        },
+        "hint": {
+          "en": "Sets the monitor's night light timer.",
+          "nl": "Zet de nachtlampjetimer van de babyfoon."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          },
+          {
+            "type": "dropdown",
+            "name": "duration",
+            "values": [
+              {
+                "id": "300",
+                "label": {
+                  "en": "5 minutes",
+                  "nl": "5 minuten"
+                }
+              },
+              {
+                "id": "600",
+                "label": {
+                  "en": "10 minutes",
+                  "nl": "10 minuten"
+                }
+              },
+              {
+                "id": "1200",
+                "label": {
+                  "en": "20 minutes",
+                  "nl": "20 minuten"
+                }
+              },
+              {
+                "id": "1800",
+                "label": {
+                  "en": "30 minutes",
+                  "nl": "30 minuten"
+                }
+              },
+              {
+                "id": "3600",
+                "label": {
+                  "en": "1 hour",
+                  "nl": "1 uur"
+                }
+              },
+              {
+                "id": "5400",
+                "label": {
+                  "en": "1.5 hours",
+                  "nl": "1,5 uur"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cancel-night-light-timer",
+        "title": {
+          "en": "Turn the night light timer off",
+          "nl": "Zet de nachtlampjetimer uit"
+        },
+        "hint": {
+          "en": "The night light stays on until it is turned off.",
+          "nl": "Het nachtlampje blijft aan tot het uitgezet wordt."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          }
+        ]
+      },
+      {
+        "id": "set-privacy-mode",
+        "title": {
+          "en": "Turn privacy mode on or off",
+          "nl": "Zet privacymodus aan of uit"
+        },
+        "titleFormatted": {
+          "en": "Turn privacy mode [[state]]",
+          "nl": "Zet privacymodus [[state]]"
+        },
+        "hint": {
+          "en": "Privacy mode turns the camera off.",
+          "nl": "Privacymodus zet de camera uit."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          },
+          {
+            "type": "dropdown",
+            "name": "state",
+            "values": [
+              {
+                "id": "on",
+                "label": {
+                  "en": "on",
+                  "nl": "aan"
+                }
+              },
+              {
+                "id": "off",
+                "label": {
+                  "en": "off",
+                  "nl": "uit"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set-motion-detection",
+        "title": {
+          "en": "Turn motion detection on or off",
+          "nl": "Zet bewegingsdetectie aan of uit"
+        },
+        "titleFormatted": {
+          "en": "Turn motion detection [[state]]",
+          "nl": "Zet bewegingsdetectie [[state]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          },
+          {
+            "type": "dropdown",
+            "name": "state",
+            "values": [
+              {
+                "id": "on",
+                "label": {
+                  "en": "on",
+                  "nl": "aan"
+                }
+              },
+              {
+                "id": "off",
+                "label": {
+                  "en": "off",
+                  "nl": "uit"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "set-sound-detection",
+        "title": {
+          "en": "Turn sound detection on or off",
+          "nl": "Zet geluidsdetectie aan of uit"
+        },
+        "titleFormatted": {
+          "en": "Turn sound detection [[state]]",
+          "nl": "Zet geluidsdetectie [[state]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=baby-monitor"
+          },
+          {
+            "type": "dropdown",
+            "name": "state",
+            "values": [
+              {
+                "id": "on",
+                "label": {
+                  "en": "on",
+                  "nl": "aan"
+                }
+              },
+              {
+                "id": "off",
+                "label": {
+                  "en": "off",
+                  "nl": "uit"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Baby Monitor",
+        "nl": "Babyfoon"
+      },
+      "class": "camera",
+      "capabilities": [
+        "measure_temperature",
+        "alarm_motion",
+        "alarm_noise",
+        "onoff",
+        "dim",
+        "speaker_playing",
+        "speaker_prev",
+        "speaker_next",
+        "lullaby_track",
+        "volume_set",
+        "privacy_mode",
+        "measure_signal_strength"
+      ],
+      "capabilitiesOptions": {
+        "onoff": {
+          "title": {
+            "en": "Night light",
+            "nl": "Nachtlampje"
+          }
+        },
+        "dim": {
+          "title": {
+            "en": "Night light brightness",
+            "nl": "Helderheid nachtlampje"
+          },
+          "min": 0.01
+        },
+        "speaker_playing": {
+          "title": {
+            "en": "Lullaby playing",
+            "nl": "Slaapliedje speelt"
+          }
+        },
+        "speaker_prev": {
+          "title": {
+            "en": "Previous lullaby",
+            "nl": "Vorig slaapliedje"
+          }
+        },
+        "speaker_next": {
+          "title": {
+            "en": "Next lullaby",
+            "nl": "Volgend slaapliedje"
+          }
+        },
+        "volume_set": {
+          "title": {
+            "en": "Lullaby volume",
+            "nl": "Volume slaapliedje"
+          },
+          "min": 0.01
+        },
+        "alarm_noise": {
+          "title": {
+            "en": "Sound detected",
+            "nl": "Geluid gedetecteerd"
+          }
+        },
+        "alarm_presence": {
+          "title": {
+            "en": "Baby in crib",
+            "nl": "Baby in bedje"
+          },
+          "titleTrue": {
+            "en": "In crib",
+            "nl": "In bedje"
+          },
+          "titleFalse": {
+            "en": "Not in crib",
+            "nl": "Niet in bedje"
+          }
+        },
+        "measure_signal_strength": {
+          "title": {
+            "en": "Wi-Fi signal",
+            "nl": "Wifi-signaal"
+          },
+          "units": {
+            "en": "%",
+            "nl": "%"
+          },
+          "decimals": 0,
+          "min": 0,
+          "max": 100
+        }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "cloud",
+        "lan"
+      ],
+      "images": {
+        "small": "/drivers/baby-monitor/assets/images/small.png",
+        "large": "/drivers/baby-monitor/assets/images/large.png",
+        "xlarge": "/drivers/baby-monitor/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "login"
+        },
+        {
+          "id": "code",
+          "navigation": {
+            "prev": "login"
+          }
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "repair": [
+        {
+          "id": "login"
+        },
+        {
+          "id": "code",
+          "navigation": {
+            "prev": "login"
+          }
+        }
+      ],
+      "id": "baby-monitor",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Alerts",
+            "nl": "Meldingen"
+          },
+          "children": [
+            {
+              "id": "motion_detection",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Motion detection",
+                "nl": "Bewegingsdetectie"
+              },
+              "hint": {
+                "en": "Whether the monitor watches for motion. Motion alerts in Homey only work while this is on.",
+                "nl": "Of de babyfoon op beweging let. Bewegingsmeldingen in Homey werken alleen als dit aan staat."
+              }
+            },
+            {
+              "id": "motion_sensitivity",
+              "type": "dropdown",
+              "value": "medium",
+              "label": {
+                "en": "Motion sensitivity",
+                "nl": "Gevoeligheid beweging"
+              },
+              "values": [
+                {
+                  "id": "low",
+                  "label": {
+                    "en": "Low",
+                    "nl": "Laag"
+                  }
+                },
+                {
+                  "id": "medium",
+                  "label": {
+                    "en": "Medium",
+                    "nl": "Gemiddeld"
+                  }
+                },
+                {
+                  "id": "high",
+                  "label": {
+                    "en": "High",
+                    "nl": "Hoog"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "sound_detection",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Sound detection",
+                "nl": "Geluidsdetectie"
+              },
+              "hint": {
+                "en": "Whether the monitor listens for sound. Sound alerts in Homey only work while this is on.",
+                "nl": "Of de babyfoon op geluid let. Geluidsmeldingen in Homey werken alleen als dit aan staat."
+              }
+            },
+            {
+              "id": "sound_sensitivity",
+              "type": "dropdown",
+              "value": "medium",
+              "label": {
+                "en": "Sound sensitivity",
+                "nl": "Gevoeligheid geluid"
+              },
+              "values": [
+                {
+                  "id": "low",
+                  "label": {
+                    "en": "Low",
+                    "nl": "Laag"
+                  }
+                },
+                {
+                  "id": "medium",
+                  "label": {
+                    "en": "Medium",
+                    "nl": "Gemiddeld"
+                  }
+                },
+                {
+                  "id": "high",
+                  "label": {
+                    "en": "High",
+                    "nl": "Hoog"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Monitor",
+            "nl": "Babyfoon"
+          },
+          "children": [
+            {
+              "id": "status_led",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Status light",
+                "nl": "Statuslampje"
+              },
+              "hint": {
+                "en": "Turns the small light on the front of the monitor on or off.",
+                "nl": "Zet het kleine lampje aan de voorkant van de babyfoon aan of uit."
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Video",
+            "nl": "Video"
+          },
+          "children": [
+            {
+              "id": "video_quality",
+              "type": "dropdown",
+              "value": "hd",
+              "label": {
+                "en": "Video quality",
+                "nl": "Videokwaliteit"
+              },
+              "hint": {
+                "en": "HD is sharper, SD sends far less data, which can play more smoothly on a busy or weak Wi-Fi connection. Applies the next time you open the camera.",
+                "nl": "HD is scherper, SD verstuurt veel minder data, wat soepeler kan spelen op druk of zwak wifi. Geldt vanaf de volgende keer dat je de camera opent."
+              },
+              "values": [
+                {
+                  "id": "hd",
+                  "label": {
+                    "en": "HD",
+                    "nl": "HD"
+                  }
+                },
+                {
+                  "id": "sd",
+                  "label": {
+                    "en": "SD",
+                    "nl": "SD"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "video_relay",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Smooth video",
+                "nl": "Vloeiende video"
+              },
+              "hint": {
+                "en": "The monitors send video with timing that makes it stutter. With this on, Homey passes the video through the app, which fixes the timing. Uses some extra memory and processor time on Homey while you watch. Turn it off to stream straight from the monitor.",
+                "nl": "De babyfoons versturen video met een timing waardoor hij hapert. Met dit aan stuurt Homey de video door de app, die de timing herstelt. Kost wat extra geheugen en processortijd op Homey zolang je kijkt. Zet het uit om rechtstreeks van de babyfoon te streamen."
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Connection",
+            "nl": "Verbinding"
+          },
+          "children": [
+            {
+              "id": "local_connection",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Local connection",
+                "nl": "Lokale verbinding"
+              },
+              "hint": {
+                "en": "Also listens to the monitor directly on your home network, next to the cloud, so alarms, the temperature and SenseIQ status keep coming in when the internet is down. It only listens and needs no setup. Leave it on, unless the monitor restarts or drops off Wi-Fi more often than before.",
+                "nl": "Luistert naast de cloud ook rechtstreeks naar de babyfoon op je thuisnetwerk, zodat meldingen, de temperatuur en de SenseIQ-status blijven binnenkomen als het internet uitvalt. Het luistert alleen en hoeft niet ingesteld te worden. Laat het aan, tenzij de babyfoon vaker dan voorheen herstart of van het wifi valt."
+              }
+            },
+            {
+              "id": "local_connection_status",
+              "type": "label",
+              "value": "",
+              "label": {
+                "en": "Status",
+                "nl": "Status"
+              },
+              "hint": {
+                "en": "What the local connection is doing right now.",
+                "nl": "Wat de lokale verbinding op dit moment doet."
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Device information",
+            "nl": "Apparaatinformatie"
+          },
+          "children": [
+            {
+              "id": "model",
+              "type": "label",
+              "value": "",
+              "label": {
+                "en": "Model",
+                "nl": "Model"
+              }
+            },
+            {
+              "id": "product_id",
+              "type": "label",
+              "value": "",
+              "label": {
+                "en": "Product id",
+                "nl": "Product-id"
+              }
+            },
+            {
+              "id": "firmware",
+              "type": "label",
+              "value": "",
+              "label": {
+                "en": "Firmware",
+                "nl": "Firmware"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "capabilities": {
+    "alarm_crying": {
+      "type": "boolean",
+      "title": {
+        "en": "Crying",
+        "nl": "Huilen"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Crying detected",
+        "nl": "Huilen gedetecteerd"
+      },
+      "insightsTitleFalse": {
+        "en": "Crying stopped",
+        "nl": "Huilen gestopt"
+      },
+      "icon": "/assets/capabilities/crying.svg"
+    },
+    "lullaby_track": {
+      "type": "enum",
+      "title": {
+        "en": "Lullaby",
+        "nl": "Slaapliedje"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": "picker",
+      "insights": false,
+      "icon": "/assets/capabilities/lullaby-track.svg",
+      "values": [
+        {
+          "id": "baa_baa_black_sheep",
+          "title": {
+            "en": "Baa Baa Black Sheep",
+            "nl": "Baa Baa Black Sheep"
+          }
+        },
+        {
+          "id": "brahms_lullaby",
+          "title": {
+            "en": "Brahms' Lullaby",
+            "nl": "Wiegenlied van Brahms"
+          }
+        },
+        {
+          "id": "rock_a_bye_baby",
+          "title": {
+            "en": "Rock-a-Bye Baby",
+            "nl": "Rock-a-Bye Baby"
+          }
+        },
+        {
+          "id": "golden_slumbers",
+          "title": {
+            "en": "Golden Slumbers",
+            "nl": "Golden Slumbers"
+          }
+        },
+        {
+          "id": "hush_little_baby",
+          "title": {
+            "en": "Hush Little Baby",
+            "nl": "Hush Little Baby"
+          }
+        },
+        {
+          "id": "mothers_shh",
+          "title": {
+            "en": "Mother's Shh",
+            "nl": "Moeders sst"
+          }
+        },
+        {
+          "id": "calming_river",
+          "title": {
+            "en": "Calming River",
+            "nl": "Kalmerende rivier"
+          }
+        },
+        {
+          "id": "heartbeat",
+          "title": {
+            "en": "Heartbeat",
+            "nl": "Hartslag"
+          }
+        },
+        {
+          "id": "vacuum_cleaner",
+          "title": {
+            "en": "Vacuum Cleaner",
+            "nl": "Stofzuiger"
+          }
+        },
+        {
+          "id": "white_noise",
+          "title": {
+            "en": "White Noise",
+            "nl": "Witte ruis"
+          }
+        },
+        {
+          "id": "garden_bird_song",
+          "title": {
+            "en": "Garden Bird Song",
+            "nl": "Vogelzang in de tuin"
+          }
+        },
+        {
+          "id": "valley_wind",
+          "title": {
+            "en": "Valley Wind",
+            "nl": "Wind in het dal"
+          }
+        },
+        {
+          "id": "ocean_shore",
+          "title": {
+            "en": "Ocean Shore",
+            "nl": "Branding"
+          }
+        },
+        {
+          "id": "night_time_nature",
+          "title": {
+            "en": "Night-time Nature",
+            "nl": "Natuur bij nacht"
+          }
+        },
+        {
+          "id": "rain_shower",
+          "title": {
+            "en": "Rain Shower",
+            "nl": "Regenbui"
+          }
+        }
+      ]
+    },
+    "measure_breathing_rate": {
+      "type": "number",
+      "title": {
+        "en": "Breathing rate",
+        "nl": "Ademhaling"
+      },
+      "units": {
+        "en": "breaths/min",
+        "nl": "ademh./min"
+      },
+      "decimals": 0,
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": true,
+      "icon": "/assets/capabilities/breathing-rate.svg"
+    },
+    "privacy_mode": {
+      "type": "boolean",
+      "title": {
+        "en": "Privacy mode",
+        "nl": "Privacymodus"
+      },
+      "desc": {
+        "en": "Turns the camera off",
+        "nl": "Zet de camera uit"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": "toggle",
+      "uiQuickAction": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Privacy mode turned on",
+        "nl": "Privacymodus aangezet"
+      },
+      "insightsTitleFalse": {
+        "en": "Privacy mode turned off",
+        "nl": "Privacymodus uitgezet"
+      },
+      "icon": "/assets/capabilities/privacy-mode.svg"
+    }
+  }
+}

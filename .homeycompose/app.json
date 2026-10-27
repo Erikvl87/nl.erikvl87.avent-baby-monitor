@@ -1,0 +1,61 @@
+{
+  "id": "nl.erikvl87.avent-baby-monitor",
+  "version": "0.1.0",
+  "support": "https://avent-baby-monitor.erikvl87.nl/",
+  "compatibility": ">=12.7.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Philips Avent Baby Monitor",
+    "nl": "Philips Avent Babyfoon"
+  },
+  "brandColor": "#3d5a80",
+  "description": {
+    "en": "Peace of mind while your little one sleeps",
+    "nl": "Met een gerust hart terwijl je kleintje slaapt"
+  },
+  "category": [
+    "security"
+  ],
+  "permissions": [],
+  "tags": {
+    "en": [
+      "philips",
+      "avent",
+      "baby monitor",
+      "baby",
+      "nursery",
+      "senseiq",
+      "lullaby",
+      "night light"
+    ],
+    "nl": [
+      "philips",
+      "avent",
+      "babyfoon",
+      "baby",
+      "babykamer",
+      "senseiq",
+      "slaapliedje",
+      "nachtlampje"
+    ]
+  },
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Erik van Leeuwen",
+    "email": "homey@erikvl87.nl"
+  },
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "erikvl87"
+      }
+    }
+  }
+}

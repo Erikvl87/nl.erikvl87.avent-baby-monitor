@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		"lib": [
+			"DOM",
+			"ESNext"
+		],
+		"module": "Preserve",
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitOverride": true,
+		"noUncheckedSideEffectImports": true,
+		"outDir": ".homeybuild",
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"target": "ES2023",
+		"types": ["node"]
+	},
+	"exclude": [
+		"website",
+		"test",
+		"vitest.config.mts",
+		"coverage"
+	]
+}

@@ -1,0 +1,32 @@
+# Documentation
+website/**
+
+# Development files
+.github/**
+.vscode/**
+@types/**
+
+# Config files not needed at runtime
+eslint.config.mjs
+.prettierrc
+tsconfig.json
+tsconfig.test.json
+pnpm-workspace.yaml
+pnpm-lock.yaml
+env.example.json
+CLAUDE.md
+
+# Git files
+.gitignore
+.git/**
+
+# Source TypeScript files (compiled JS is used)
+*.mts
+
+# All source maps
+**/*.map
+
+# Test files and coverage output
+test/**
+coverage/**
+vitest.config.mts

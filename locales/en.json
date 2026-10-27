@@ -1,0 +1,58 @@
+{
+	"device": {
+		"unknownModel": "Unknown model",
+		"unavailable": {
+			"apiError": "Can't reach the Philips Avent cloud",
+			"offline": "The baby monitor is offline",
+			"sessionExpired": "Signed out of Philips Avent. Use Repair to sign in again."
+		},
+		"warning": {
+			"apiErrorWithLocal": "Can't reach the Philips Avent cloud. Alarms still come in over the local connection; commands and video wait for the cloud."
+		},
+		"localConnection": {
+			"off": "Off",
+			"waitingForCloud": "Waiting for the cloud",
+			"searching": "Looking for the monitor on your network",
+			"notFound": "Monitor not found on your network",
+			"connecting": "Connecting",
+			"connected": "Connected"
+		}
+	},
+	"errors": {
+		"wrongPassword": "The e-mail address or password is wrong.",
+		"wrongCode": "That code is wrong or has expired. Request a new one and try again.",
+		"loginFailed": "Signing in failed (__code__).",
+		"noCameras": "No baby monitors were found on this account.",
+		"differentAccount": "This baby monitor isn't on that account. Sign in with the account you added it with.",
+		"unknownLullaby": "Unknown lullaby.",
+		"unknownCatalogue": "This monitor's lullaby list isn't known to the app yet, so a lullaby can't be picked. Play, stop, next and previous still work.",
+		"noPendingLogin": "Start again from the first step.",
+		"videoNeedsRepair": "Use Repair on this device and sign in again to enable video.",
+		"privacyMode": "Privacy mode is on, so the camera is off.",
+		"videoFailed": "The camera didn't start the video. Try again in a moment."
+	},
+	"settings": {
+		"debug": {
+			"label": "Detailed diagnostics",
+			"hint": "Include extra detail in crash and diagnostic reports.",
+			"footer": "Enable this before reporting a problem to the app developer."
+		}
+	},
+	"signIn": {
+		"heading": "Sign in with your Philips Avent Baby Monitor+ account",
+		"email": "E-mail address",
+		"password": "Password",
+		"country": "Country",
+		"countryHint": "The country you chose when you created the account.",
+		"sendCode": "Send verification code",
+		"codeHeading": "Enter the verification code",
+		"sentTo": "Philips Avent emailed a 6-digit code to __email__.",
+		"code": "Verification code",
+		"signIn": "Sign in",
+		"resend": "Send a new code",
+		"resent": "A new code is on its way."
+	},
+	"video": {
+		"title": "Video"
+	}
+}

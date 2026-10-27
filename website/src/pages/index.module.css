@@ -1,0 +1,205 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.disclaimer {
+  background-color: var(--avent-pale-sky);
+  color: #2b3f5a;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #98c1d9;
+}
+
+.disclaimer strong {
+  color: #2b3f5a;
+}
+
+[data-theme='dark'] .disclaimer,
+[data-theme='dark'] .disclaimer strong {
+  background-color: #1b2635;
+  color: #e0ecf5;
+  border-bottom-color: #2b3f5a;
+}
+
+/* Pale sky fading into the warm glow of the night light */
+.heroBanner {
+  padding: 4rem 0;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 85% 20%, rgba(242, 166, 90, 0.28), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(152, 193, 217, 0.45), transparent 50%),
+    linear-gradient(160deg, #e0ecf5 0%, #f5f9fc 55%, var(--avent-peach) 100%);
+  color: #2b3f5a;
+}
+
+[data-theme='dark'] .heroBanner {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(242, 166, 90, 0.18), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(152, 193, 217, 0.15), transparent 50%),
+    linear-gradient(160deg, #1b2635 0%, #121a24 100%);
+  color: #e0ecf5;
+}
+
+.heroWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.heroContent {
+  flex: 1 1 0;
+  text-align: left;
+  max-width: 600px;
+}
+
+.heroContent :global(.hero__title) {
+  color: #2b3f5a;
+}
+
+.heroContent :global(.hero__subtitle) {
+  color: #3d5a80;
+}
+
+[data-theme='dark'] .heroContent :global(.hero__title) {
+  color: #ffffff;
+}
+
+[data-theme='dark'] .heroContent :global(.hero__subtitle) {
+  color: #98c1d9;
+}
+
+.heroVisual {
+  flex: 1 1 0;
+  max-width: 520px;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 24px;
+  box-shadow:
+    0 0 0 8px rgba(255, 255, 255, 0.6),
+    0 20px 50px rgba(242, 166, 90, 0.3),
+    0 10px 30px rgba(43, 63, 90, 0.2);
+}
+
+[data-theme='dark'] .heroImage {
+  box-shadow:
+    0 0 0 8px rgba(255, 255, 255, 0.06),
+    0 20px 50px rgba(242, 166, 90, 0.15),
+    0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem 0;
+  }
+
+  .heroWrapper {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .heroContent {
+    text-align: center;
+  }
+
+  .heroVisual {
+    width: 100%;
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+@media screen and (max-width: 996px) {
+  .buttons {
+    justify-content: center;
+  }
+}
+
+.buttons :global(.button),
+.buttons :global(.button:hover) {
+  text-decoration: none;
+}
+
+.buttons :global(.button--secondary) {
+  color: #ffffff;
+  background-color: #3d5a80;
+  border-color: #3d5a80;
+  font-weight: 600;
+}
+
+.buttons :global(.button--secondary:hover) {
+  background-color: #2b3f5a;
+  border-color: #2b3f5a;
+  color: #ffffff;
+}
+
+.buttons :global(.button.button--outline) {
+  color: #3d5a80;
+  border: 2px solid #3d5a80;
+  background-color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+}
+
+.buttons :global(.button.button--outline:hover) {
+  color: #2b3f5a;
+  border-color: var(--avent-amber);
+  background-color: var(--avent-peach);
+}
+
+[data-theme='dark'] .buttons :global(.button--secondary) {
+  color: #121a24;
+  background-color: #98c1d9;
+  border-color: #98c1d9;
+}
+
+[data-theme='dark'] .buttons :global(.button--secondary:hover) {
+  background-color: #b1d0e3;
+  border-color: #b1d0e3;
+}
+
+[data-theme='dark'] .buttons :global(.button.button--outline) {
+  color: #e0ecf5;
+  border-color: #98c1d9;
+  background-color: transparent;
+}
+
+[data-theme='dark'] .buttons :global(.button.button--outline:hover) {
+  color: #121a24;
+  border-color: var(--avent-amber);
+  background-color: var(--avent-amber);
+}
+
+.heroDescription {
+  margin: 1rem 0 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.heroDescription a {
+  color: #3d5a80;
+  text-decoration: underline;
+  text-decoration-color: var(--avent-amber);
+  text-underline-offset: 3px;
+  font-weight: 500;
+}
+
+.heroDescription a:hover {
+  color: #2b3f5a;
+}
+
+[data-theme='dark'] .heroDescription a {
+  color: #b1d0e3;
+}

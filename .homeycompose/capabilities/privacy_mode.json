@@ -1,0 +1,25 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Privacy mode",
+    "nl": "Privacymodus"
+  },
+  "desc": {
+    "en": "Turns the camera off",
+    "nl": "Zet de camera uit"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle",
+  "uiQuickAction": false,
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Privacy mode turned on",
+    "nl": "Privacymodus aangezet"
+  },
+  "insightsTitleFalse": {
+    "en": "Privacy mode turned off",
+    "nl": "Privacymodus uitgezet"
+  },
+  "icon": "/assets/capabilities/privacy-mode.svg"
+}

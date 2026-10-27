@@ -1,0 +1,32 @@
+{
+  "name": "nl.erikvl87.avent-baby-monitor",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit -p tsconfig.test.json"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/homey": "npm:homey-apps-sdk-v3-types@^1.8.1",
+    "@types/node": "^26.6.5",
+    "@vitest/coverage-v8": "^5.0.5",
+    "eslint": "^10.13.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.0.5"
+  },
+  "dependencies": {
+    "homey-log": "^2.1.2",
+    "mqtt": "^5.16.1",
+    "werift": "^0.25.2"
+  },
+  "engines": {
+    "node": ">=24.0"
+  },
+  "packageManager": "pnpm@12.6.0"
+}

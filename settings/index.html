@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+</head>
+<body>
+  <div class="homey-form-checkbox-set">
+    <div class="homey-form-checkbox-set-title" id="debug-label"></div>
+    <label class="homey-form-checkbox">
+      <input type="checkbox" class="homey-form-checkbox-input" id="debug">
+      <span class="homey-form-checkbox-checkmark"></span>
+      <span class="homey-form-checkbox-text" id="debug-hint"></span>
+    </label>
+  </div>
+  <p class="homey-subtitle" id="debug-footer"></p>
+
+  <script>
+    function onHomeyReady(Homey) {
+      document.getElementById('debug-label').textContent = Homey.__('settings.debug.label');
+      document.getElementById('debug-hint').textContent = Homey.__('settings.debug.hint');
+      document.getElementById('debug-footer').textContent = Homey.__('settings.debug.footer');
+
+      Homey.get('debug', function(err, value) {
+        document.getElementById('debug').checked = value === true;
+        Homey.ready();
+      });
+
+      document.getElementById('debug').addEventListener('change', function() {
+        Homey.set('debug', this.checked, function(err) {
+          if (err) Homey.alert(err.message || String(err));
+        });
+      });
+    }
+  </script>
+</body>
+</html>

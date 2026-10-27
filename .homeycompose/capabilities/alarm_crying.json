@@ -1,0 +1,20 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Crying",
+    "nl": "Huilen"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Crying detected",
+    "nl": "Huilen gedetecteerd"
+  },
+  "insightsTitleFalse": {
+    "en": "Crying stopped",
+    "nl": "Huilen gestopt"
+  },
+  "icon": "/assets/capabilities/crying.svg"
+}

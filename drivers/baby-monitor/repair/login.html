@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+	<div style="text-align: center; margin: 16px 0;">
+		<img src="logo.svg" style="max-width: 120px;" />
+	</div>
+
+	<form class="homey-form" id="avent-login-form">
+
+		<div class="homey-form-group">
+			<label class="homey-form-label" for="avent-login-email" id="avent-login-email-label"></label>
+			<input id="avent-login-email" class="homey-form-input" type="email" autocomplete="username" required />
+		</div>
+
+		<div class="homey-form-group">
+			<label class="homey-form-label" for="avent-login-password" id="avent-login-password-label"></label>
+			<input id="avent-login-password" class="homey-form-input" type="password" autocomplete="current-password" required />
+		</div>
+
+		<div class="homey-form-group">
+			<label class="homey-form-label" for="avent-login-country" id="avent-login-country-label"></label>
+			<select id="avent-login-country" class="homey-form-select" required></select>
+			<p class="homey-subtitle" id="avent-login-country-hint"></p>
+		</div>
+
+		<div class="homey-form-group">
+			<div id="avent-login-error" style="color: #e74c3c; display: none;"></div>
+		</div>
+
+		<button type="submit" class="homey-button-primary-full" id="avent-login-submit" data-i18n="signIn.sendCode"></button>
+	</form>
+
+	<script type="text/javascript">
+		// Homey loads every custom pair view into the same page, so ids are prefixed per view and the script
+		// keeps its variables to itself.
+		(function() {
+			// Script errors in this screen would otherwise only show as a blank page; send them to the app log.
+			window.addEventListener('error', function(event) {
+				Homey.emit('viewLog', 'login view error: ' + event.message, function() {});
+			});
+			// Homey fills in data-i18n itself; this covers a Homey app that doesn't.
+			var submitButton = document.getElementById('avent-login-submit');
+			if (!submitButton.textContent.trim()) submitButton.textContent = Homey.__('signIn.sendCode');
+			Homey.setTitle(Homey.__('signIn.heading'));
+			document.getElementById('avent-login-email-label').textContent = Homey.__('signIn.email');
+			document.getElementById('avent-login-password-label').textContent = Homey.__('signIn.password');
+			document.getElementById('avent-login-country-label').textContent = Homey.__('signIn.country');
+			document.getElementById('avent-login-country-hint').textContent = Homey.__('signIn.countryHint');
+
+			// The driver knows the countries and what to pre-fill; the browser knows how to name the countries.
+			Homey.emit('getLoginDefaults', null, function(err, defaults) {
+				if (err || !defaults) return;
+				var names;
+				try {
+					names = new Intl.DisplayNames([defaults.language || 'en'], { type: 'region' });
+				} catch (e) {
+					names = { of: function(code) { return code; } };
+				}
+				var select = document.getElementById('avent-login-country');
+				defaults.countries
+					.map(function(code) { return { code: code, name: names.of(code) || code }; })
+					.sort(function(a, b) { return a.name.localeCompare(b.name); })
+					.forEach(function(country) {
+						var option = document.createElement('option');
+						option.value = country.code;
+						option.textContent = country.name;
+						select.appendChild(option);
+					});
+				select.value = defaults.country || '';
+				if (defaults.email) {
+					document.getElementById('avent-login-email').value = defaults.email;
+					document.getElementById('avent-login-password').focus();
+				}
+			});
+
+			document.getElementById('avent-login-form').addEventListener('submit', function(e) {
+				e.preventDefault();
+				var error = document.getElementById('avent-login-error');
+				var submit = document.getElementById('avent-login-submit');
+				error.style.display = 'none';
+				submit.classList.add('is-loading');
+
+				Homey.emit('login', {
+					email: document.getElementById('avent-login-email').value.trim(),
+					password: document.getElementById('avent-login-password').value,
+					country: document.getElementById('avent-login-country').value,
+				}, function(err) {
+					submit.classList.remove('is-loading');
+					if (err) {
+						error.textContent = err.message || String(err);
+						error.style.display = 'block';
+						return;
+					}
+					Homey.showView('code');
+				});
+			});
+		})();
+	</script>
+</body>
+</html>
