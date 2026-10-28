@@ -25,4 +25,4 @@ The monitors send their video with timing information that makes players stutter
 * **Sometimes the camera doesn't answer in time.** Homey then shows *"The camera didn't start the video. Try again in a moment."* Close the video and open it again.
 * **At most two streams per monitor.** With [Smooth video](settings/device/video.md#smooth-video) on, each viewer gets a stream from the monitor. When a third one starts watching, the oldest stream is closed.
 * **Some SCD973 units stop the lullaby when the video starts.** A lullaby that was playing can stop when you open the camera; play it again.
-* **Your Homey must support camera video.** On a Homey that doesn't, the rest of the app works as usual, but there is no video on the device.
+* **Homey Self-Hosted Server needs version 12.12 or later.** On an older version, the rest of the app works as usual, but there is no video on the device.
