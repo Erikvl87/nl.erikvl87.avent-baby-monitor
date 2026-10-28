@@ -4,5 +4,8 @@
   },
   "0.1.1": {
     "en": "Updated the app description."
+  },
+  "0.2.0": {
+    "en": "Homey viewers now share one video stream, leaving more room for the Philips Avent app."
   }
 }

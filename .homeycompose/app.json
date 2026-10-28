@@ -1,6 +1,6 @@
 {
   "id": "nl.erikvl87.avent-baby-monitor",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "support": "https://avent-baby-monitor.erikvl87.nl/",
   "compatibility": ">=12.7.0",
   "sdk": 3,
