@@ -29,7 +29,8 @@ installed app's log, use the `homey-run` skill.
 | [TuyaClient.mts](TuyaClient.mts) | Cloud API: signed POSTs, two-step sign-in, commands. |
 | [TuyaLanSession.mts](TuyaLanSession.mts) | Listen-only Tuya LAN session (protocol 3.3/3.4/3.5, TCP 6668). |
 | [TuyaSignaling.mts](TuyaSignaling.mts) | Tuya MQTT: WebRTC signalling for video, Wi-Fi signal queries, the camera's data point pushes. |
-| [VideoRelay.mts](VideoRelay.mts) | werift relay between camera and Homey that fixes the camera's RTP timestamps. |
+| [CameraSession.mts](CameraSession.mts) | One camera stream per device, shared by every Homey viewer; fixes the camera's RTP timestamps. |
+| [VideoRelay.mts](VideoRelay.mts) | werift loading and `ViewerConnection`, one Homey viewer of a `CameraSession`. |
 | [drivers/baby-monitor/](drivers/baby-monitor/) | `driver.mts`: pair, repair, flow cards. `device.mts`: polling, data points → capabilities, alarms, commands. |
 | [utils/](utils/) | Pure logic (data points, alarms, lullaby catalogue, LAN/MQTT framing, SDP, RTP). Most tests target these. |
 | [.homeycompose/](.homeycompose/) | Source of `app.json`. |

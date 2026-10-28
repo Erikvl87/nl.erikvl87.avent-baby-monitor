@@ -85,6 +85,10 @@ Turn the [local connection](settings/device/local-connection.md) off in the devi
 
 See [Live Video](live-video.md) for more.
 
+### The video doesn't start while others are watching
+
+Philips limits how many people can watch a monitor at the same time, and the limit can differ per model: the manuals of the SCD923 and SCD973 say three. Viewers in the Philips Avent app count too. When the monitor is full, close the video on a phone and try again. With [Smooth video](settings/device/video.md#smooth-video) on, all Homey viewers together take one place; see [How many people can watch](live-video.md#how-many-people-can-watch).
+
 ## Lullabies
 
 ### The Lullaby picker disappeared, or "This monitor's lullaby list isn't known to the app yet"

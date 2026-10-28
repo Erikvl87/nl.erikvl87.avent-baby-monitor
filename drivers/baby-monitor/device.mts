@@ -7,8 +7,9 @@ import TuyaLanSession, { type TuyaLanVersion } from '../../TuyaLanSession.mjs';
 import TuyaError from '../../errors/tuya-error.mjs';
 import HttpError from '../../errors/http-error.mjs';
 import TuyaSignaling, { type StaleStream, type StreamRequest } from '../../TuyaSignaling.mjs';
-import VideoRelay from '../../VideoRelay.mjs';
+import CameraSession from '../../CameraSession.mjs';
 import type { DeviceWithVideo, HomeyWithVideos, WebRtcAnswer } from '../../types/homey-video.mjs';
+import type { IceServer, RtcConfig } from '../../types/tuya.mjs';
 import { prepareOffer, streamTypeFor } from '../../utils/sdp.mjs';
 import { AvailabilityTracker } from '../../utils/availability-tracker.mjs';
 import { discoverTuyaDevice } from '../../utils/tuya-lan-discovery.mjs';
@@ -112,8 +113,10 @@ export default class BabyMonitorDevice extends Homey.Device {
 	private senseIqStaleTimer: NodeJS.Timeout | undefined;
 	private readonly alarmTimers = new Map<AlarmKind, NodeJS.Timeout>();
 	private lan: TuyaLanSession | undefined;
-	/** Streams being relayed to viewers; see VideoRelay.mts. */
-	private readonly relays = new Set<VideoRelay>();
+	/** The camera stream every relayed viewer shares; see CameraSession.mts. */
+	private cameraSession: CameraSession | undefined;
+	/** The camera's signalling stream for `cameraSession`, once it answered. */
+	private cameraStream: { signaling: TuyaSignaling; stream: StaleStream } | undefined;
 	private lanDiscovery: AbortController | undefined;
 	private lanConnected = false;
 	private lanStatus: LanStatus | undefined;
@@ -203,6 +206,14 @@ export default class BabyMonitorDevice extends Homey.Device {
 			if (mapping) dps[mapping.dp] = mapping.write(newSettings[key]);
 		}
 		if (Object.keys(dps).length > 0) await this.setDps(dps);
+
+		// A running shared stream switches for every viewer; a new one asks for the new quality anyway.
+		if (changedKeys.includes('video_quality') && this.cameraStream) {
+			const { signaling, stream } = this.cameraStream;
+			const quality = newSettings.video_quality === 'sd' ? 'sd' : 'hd';
+			this.logger.log(`Switching the running video stream to ${quality.toUpperCase()}`);
+			signaling.setQuality(stream.sessionId, quality).catch(error => this.logger.error(error));
+		}
 
 		// After this handler returns, so the status line written then isn't overwritten by the settings being saved.
 		if (changedKeys.includes('local_connection')) {
@@ -366,52 +377,72 @@ export default class BabyMonitorDevice extends Homey.Device {
 		if (this.getCapabilityValue('privacy_mode') === true) throw new Error(this.homey.__('errors.privacyMode'));
 
 		const relayed = this.getSetting('video_relay') !== false;
-		this.logger.log(`Starting a ${relayed ? 'relayed' : 'direct'} video stream (${this.relays.size} already running)`);
 		try {
-			const rtc = await client.getRtcConfig(this.getData().id);
-			const signaling = getApp(this.homey).getSignaling(session);
-			const quality = this.getSetting('video_quality') === 'sd' ? 'sd' : 'hd';
-			const streamType = streamTypeFor(rtc.skill, quality);
-			this.logger.debug(`Asking for the ${quality.toUpperCase()} stream (type ${streamType})`);
-			const request = (sdp: string, candidates?: string[]): StreamRequest => ({
-				deviceId: this.getData().id,
-				offerSdp: prepareOffer(sdp),
-				candidates,
-				rtc,
-				streamType,
-				quality,
-			});
-
 			if (!relayed) {
-				const answer = await signaling.startStream(request(offerSdp));
+				this.logger.log('Starting a direct video stream');
+				const signaling = getApp(this.homey).getSignaling(session);
+				const rtc = await client.getRtcConfig(this.getData().id);
+				const answer = await signaling.startStream(this.streamRequest(rtc, offerSdp));
 				return { answerSdp: answer.answerSdp, streamId: answer.sessionId };
 			}
 
-			let stream: StaleStream | undefined;
-			const relay = new VideoRelay({
-				logger: this.logger.createChildLogger({ prefix: 'Video' }),
-				iceServers: rtc.p2pConfig?.ices ?? [],
-				signal: async (offer): Promise<string> => {
-					const answer = await signaling.startStream(request(offer.sdp, offer.candidates));
-					stream = { deviceId: this.getData().id, motoId: rtc.motoId, sessionId: answer.sessionId };
-					await this.rememberVideoStream(stream);
-					return answer.answerSdp;
-				},
-				onClose: (): void => {
-					this.relays.delete(relay);
-					if (stream) this.endVideoStream(signaling, stream).catch(error => this.logger.error(error));
-				},
-			});
-			this.limitRelays();
-			this.relays.add(relay);
-			const answerSdp = await relay.answer(offerSdp);
-			return { answerSdp, streamId: stream?.sessionId };
+			// Created before any await, so viewers that arrive together share one camera stream.
+			const running = this.cameraSession && !this.cameraSession.isClosed() ? this.cameraSession : undefined;
+			const cameraSession = running ?? this.createCameraSession(session, client);
+			this.logger.log(
+				running
+					? `Adding a viewer to the running video stream (${running.viewerCount} watching)`
+					: 'Starting a relayed video stream',
+			);
+			const answerSdp = await cameraSession.addViewer(offerSdp);
+			return { answerSdp, streamId: this.cameraStream?.stream.sessionId };
 		} catch (error) {
 			const stack = (error as Error).stack?.split('\n').slice(0, 3).join(' / ');
 			this.logger.log(`Starting the video stream failed: ${(error as Error).message ?? String(error)} (${stack})`);
 			if (error instanceof TuyaError && error.isSessionExpired) await this.handleApiError(error, 'Video');
 			throw new Error(this.homey.__('errors.videoFailed'), { cause: error });
 		}
+	}
+
+	/** What the camera needs to start a stream, at the quality the settings ask for. */
+	private streamRequest(rtc: RtcConfig, sdp: string, candidates?: string[], onEnded?: () => void): StreamRequest {
+		const quality = this.getSetting('video_quality') === 'sd' ? 'sd' : 'hd';
+		const streamType = streamTypeFor(rtc.skill, quality);
+		this.logger.debug(`Asking for the ${quality.toUpperCase()} stream (type ${streamType})`);
+		return { deviceId: this.getData().id, offerSdp: prepareOffer(sdp), candidates, rtc, streamType, quality, onEnded };
+	}
+
+	/** Starts the camera stream that relayed viewers share; it closes itself once nobody watches. */
+	private createCameraSession(session: TuyaSession, client: TuyaClient): CameraSession {
+		const signaling = getApp(this.homey).getSignaling(session);
+		let rtc: Promise<RtcConfig> | undefined;
+		const rtcConfig = async (): Promise<RtcConfig> => (rtc ??= client.getRtcConfig(this.getData().id));
+		let stream: StaleStream | undefined;
+		const cameraSession = new CameraSession({
+			logger: this.logger.createChildLogger({ prefix: 'Video' }),
+			iceServers: async (): Promise<IceServer[]> => (await rtcConfig()).p2pConfig?.ices ?? [],
+			signal: async (offer): Promise<string> => {
+				const config = await rtcConfig();
+				const answer = await signaling.startStream(
+					this.streamRequest(config, offer.sdp, offer.candidates, () => cameraSession.close()),
+				);
+				stream = { deviceId: this.getData().id, motoId: config.motoId, sessionId: answer.sessionId };
+				await this.rememberVideoStream(stream);
+				// Closed while the camera answered: onClose had no stream to end yet.
+				if (cameraSession.isClosed()) await this.endVideoStream(signaling, stream);
+				else this.cameraStream = { signaling, stream };
+				return answer.answerSdp;
+			},
+			onClose: (): void => {
+				if (this.cameraSession === cameraSession) {
+					this.cameraSession = undefined;
+					this.cameraStream = undefined;
+				}
+				if (stream) this.endVideoStream(signaling, stream).catch(error => this.logger.error(error));
+			},
+		});
+		this.cameraSession = cameraSession;
+		return cameraSession;
 	}
 
 	/**
@@ -454,24 +485,13 @@ export default class BabyMonitorDevice extends Homey.Device {
 	 * stopped again; opening the device page starts a stream, so this is when a play button gets pressed.
 	 */
 	private async waitForConnectingStreams(): Promise<void> {
-		const connecting = [...this.relays].filter(relay => relay.isConnecting());
-		if (connecting.length === 0) return;
+		const cameraSession = this.cameraSession;
+		if (!cameraSession?.isConnecting()) return;
 		this.logger.log('Waiting for the video stream to connect before playing');
 		await Promise.race([
-			Promise.all(connecting.map(relay => relay.connected())),
+			cameraSession.connected(),
 			new Promise(resolve => this.homey.setTimeout(resolve, streamConnectWaitMs)),
 		]);
-	}
-
-	/** Keeps at most two relayed streams per camera, closing the oldest: each one is a stream from the camera. */
-	private limitRelays(): void {
-		while (this.relays.size >= 2) {
-			const oldest = this.relays.values().next().value;
-			if (!oldest) break;
-			this.logger.log('Closing the oldest video stream to make room');
-			oldest.close();
-			this.relays.delete(oldest);
-		}
 	}
 
 	private async start(session: TuyaSession): Promise<void> {
@@ -498,8 +518,7 @@ export default class BabyMonitorDevice extends Homey.Device {
 		]) {
 			this.homey.clearTimeout(timer);
 		}
-		for (const relay of [...this.relays]) relay.close();
-		this.relays.clear();
+		this.cameraSession?.close();
 		for (const timer of this.alarmTimers.values()) this.homey.clearTimeout(timer);
 		this.alarmTimers.clear();
 		this.stopLan();

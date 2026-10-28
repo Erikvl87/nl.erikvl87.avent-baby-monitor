@@ -4,7 +4,7 @@ import type { IClientOptions, MqttClient } from 'mqtt';
 import TuyaSignaling from '../TuyaSignaling.mjs';
 import type { TuyaSession } from '../types/tuya.mjs';
 import { decodeDeviceMessage, encodeDeviceMessage, type SignalMessage } from '../utils/tuya-mqtt.mjs';
-import { createFakeLogger } from './helpers/fake-logger.mjs';
+import { createFakeLogger, type FakeLogger } from './helpers/fake-logger.mjs';
 
 const session: TuyaSession = {
 	sid: 'sid1',
@@ -42,17 +42,19 @@ function setup(sessionOverrides: Partial<TuyaSession> = {}): {
 	signaling: TuyaSignaling;
 	client: FakeClient;
 	connect: ReturnType<typeof vi.fn>;
+	logger: FakeLogger;
 } {
 	const client = createFakeClient();
+	const logger = createFakeLogger();
 	const connect = vi.fn(async (_url: string, _options: IClientOptions) => client as unknown as MqttClient);
 	const signaling = new TuyaSignaling({
-		logger: createFakeLogger(),
+		logger,
 		session: { ...session, ...sessionOverrides },
 		connect,
 		answerTimeoutMs: 1_000,
 		candidateWaitMs: 100,
 	});
-	return { signaling, client, connect };
+	return { signaling, client, connect, logger };
 }
 
 /** The offer the signaling published, once it has been published. */
@@ -179,6 +181,57 @@ describe('TuyaSignaling', () => {
 		const { message } = await publishedOffer(client);
 		reply(client, message.data.header.sessionid, 'disconnect', { mode: 'webrtc' });
 		await expect(stream).rejects.toThrow('ended the stream');
+	});
+
+	it('logs what the camera sent instead of an answer, without its credentials', async () => {
+		const { signaling, client, logger } = setup();
+		const stream = signaling.startStream({ deviceId: 'dev1', offerSdp: 'v=0', rtc, streamType: 2 });
+		const failure = expect(stream).rejects.toThrow('did not answer');
+		const { message } = await publishedOffer(client);
+		reply(client, message.data.header.sessionid, 'error', { errorCode: 23, auth: 'secret', token: ['t'] });
+		await vi.advanceTimersByTimeAsync(1_000);
+		await failure;
+
+		const line = logger.logs.map(args => String(args[0])).find(text => text.includes('unexpected message'));
+		expect(line).toBe('The camera sent an unexpected message before answering: type error, fields errorCode, auth, token; errorCode=23');
+	});
+
+	it('tells its owner when the camera ends a stream it answered', async () => {
+		const { signaling, client } = setup();
+		const onEnded = vi.fn();
+		const stream = signaling.startStream({ deviceId: 'dev1', offerSdp: 'v=0', rtc, streamType: 2, onEnded });
+		const { message } = await publishedOffer(client);
+		const sessionId = message.data.header.sessionid;
+		reply(client, sessionId, 'answer', { sdp: 'v=0\r\n' });
+		await vi.advanceTimersByTimeAsync(100);
+		await stream;
+
+		reply(client, sessionId, 'candidate', { candidate: 'a=candidate:1 1 udp 1 192.168.5.166 5000 typ host' });
+		expect(onEnded).not.toHaveBeenCalled();
+		reply(client, sessionId, 'disconnect', { mode: 'webrtc' });
+		expect(onEnded).toHaveBeenCalledTimes(1);
+		// The camera ended it itself, so there is nothing left to end.
+		expect(await signaling.endStream(sessionId)).toBe(false);
+	});
+
+	it('switches a running stream to another quality', async () => {
+		const { signaling, client } = setup();
+		const stream = signaling.startStream({ deviceId: 'dev1', offerSdp: 'v=0', rtc, streamType: 2 });
+		const { message } = await publishedOffer(client);
+		const sessionId = message.data.header.sessionid;
+		reply(client, sessionId, 'answer', { sdp: 'v=0\r\n' });
+		await vi.advanceTimersByTimeAsync(100);
+		await stream;
+		client.publishAsync.mockClear();
+
+		expect(await signaling.setQuality(sessionId, 'sd')).toBe(true);
+		const [topic, payload] = client.publishAsync.mock.calls[0] as [string, string];
+		const resolution = JSON.parse(payload) as SignalMessage;
+		expect(topic).toBe('/av/moto/moto1/u/dev1');
+		expect(resolution.protocol).toBe(312);
+		expect(resolution.data.header.sessionid).toBe(sessionId);
+		expect(resolution.data.msg).toEqual({ mode: 'webrtc', cmdValue: 1 });
+		expect(await signaling.setQuality('unknown', 'sd')).toBe(false);
 	});
 
 	it('asks for the HD stream a few seconds after the answer', async () => {

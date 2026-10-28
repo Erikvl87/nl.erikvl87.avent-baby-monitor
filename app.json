@@ -1104,8 +1104,8 @@
                 "nl": "Videokwaliteit"
               },
               "hint": {
-                "en": "HD is sharper, SD sends far less data, which can play more smoothly on a busy or weak Wi-Fi connection. Applies the next time you open the camera.",
-                "nl": "HD is scherper, SD verstuurt veel minder data, wat soepeler kan spelen op druk of zwak wifi. Geldt vanaf de volgende keer dat je de camera opent."
+                "en": "HD is sharper, SD sends far less data, which can play more smoothly on a busy or weak Wi-Fi connection. With Smooth video on, a change applies right away; otherwise the next time you open the camera.",
+                "nl": "HD is scherper, SD verstuurt veel minder data, wat soepeler kan spelen op druk of zwak wifi. Met Vloeiende video aan geldt een wijziging meteen, anders vanaf de volgende keer dat je de camera opent."
               },
               "values": [
                 {
@@ -1133,8 +1133,8 @@
                 "nl": "Vloeiende video"
               },
               "hint": {
-                "en": "The monitors send video with timing that makes it stutter. With this on, Homey passes the video through the app, which fixes the timing. Uses some extra memory and processor time on Homey while you watch. Turn it off to stream straight from the monitor.",
-                "nl": "De babyfoons versturen video met een timing waardoor hij hapert. Met dit aan stuurt Homey de video door de app, die de timing herstelt. Kost wat extra geheugen en processortijd op Homey zolang je kijkt. Zet het uit om rechtstreeks van de babyfoon te streamen."
+                "en": "The monitors send video with timing that makes it stutter. With this on, Homey passes the video through the app, which fixes the timing and shares one stream from the monitor with everyone watching in Homey: Philips limits how many can watch a monitor at once, depending on the model, and Homey then takes just one of those places. Uses some extra memory and processor time on Homey while you watch. Turn it off to stream straight from the monitor; every Homey viewer then takes a place.",
+                "nl": "De babyfoons versturen video met een timing waardoor hij hapert. Met dit aan stuurt Homey de video door de app, die de timing herstelt en één stream van de babyfoon deelt met iedereen die in Homey kijkt: Philips beperkt hoeveel mensen tegelijk naar een babyfoon kunnen kijken, afhankelijk van het model, en Homey neemt dan maar één van die plekken in. Kost wat extra geheugen en processortijd op Homey zolang je kijkt. Zet het uit om rechtstreeks van de babyfoon te streamen; elke kijker in Homey neemt dan een eigen plek in."
               }
             }
           ]

@@ -12,13 +12,15 @@ The **Video quality** setting, in the **Video** group, chooses which stream the 
 
 HD is sharper. SD sends far less data, so it can play more smoothly when the monitor's Wi-Fi connection is weak or busy.
 
-The setting applies the next time you open the camera. The video starts in SD either way and switches to the chosen quality after a few seconds.
+With [Smooth video](#smooth-video) on, a change applies right away, for everyone watching the monitor in Homey. With Smooth video off, it applies the next time you open the camera. The video starts in SD either way and switches to the chosen quality after a few seconds.
 
 ## Smooth video
 
 The **Smooth video** setting is on by default. The monitors send their video with timing that makes it stutter. With this setting on, the video passes through the app on your Homey, which fixes the timing on the way. Nothing is decoded or re-encoded, but it does use some extra memory (about 40 MB) and a little processor time on your Homey while someone watches. With nobody watching, it costs nothing.
 
-Turn it off to stream straight from the monitor to Homey, for example to rule the app out when the video doesn't start.
+Philips limits how many people can watch a monitor at once, depending on the model. With this setting on, Homey receives one stream from the monitor and passes it on to everyone watching in Homey, up to three people, so Homey takes just one of the monitor's places. See [How many people can watch](../../live-video.md#how-many-people-can-watch).
+
+Turn it off to stream straight from the monitor to Homey, for example to rule the app out when the video doesn't start. Every Homey viewer then takes a place of their own.
 
 ## Locating the Settings
 

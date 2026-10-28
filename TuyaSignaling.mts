@@ -28,6 +28,8 @@ export interface StreamRequest {
 	quality?: 'hd' | 'sd';
 	/** ICE candidates to send after the offer, as `candidate:...`, for an offer that doesn't carry them itself. */
 	candidates?: string[];
+	/** Called when the camera ends the stream after it answered. */
+	onEnded?: () => void;
 }
 
 export interface StreamAnswer {
@@ -54,6 +56,20 @@ export interface TuyaSignalingOptions {
 	candidateWaitMs?: number;
 	/** How long the connection stays open after the last stream started. */
 	idleCloseMs?: number;
+}
+
+/**
+ * A signalling message for the log: its type, the names of its fields, and the values of the fields that look like an
+ * error code or reason. No other values: fields like `auth` and `token` are credentials.
+ */
+export function describeSignal(message: SignalMessage): string {
+	const msg = (message.data?.msg ?? {}) as Record<string, unknown>;
+	const details = Object.entries(msg)
+		.filter(([key, value]) => /code|err|reason|status|result/i.test(key) && typeof value !== 'object')
+		.map(([key, value]) => `${key}=${String(value)}`);
+	const fields = Object.keys(msg).join(', ') || 'none';
+	const type = message.data?.header?.type ?? 'unknown';
+	return `type ${type}, fields ${fields}${details.length > 0 ? `; ${details.join(', ')}` : ''}`;
 }
 
 interface PendingStream {
@@ -137,7 +153,11 @@ export default class TuyaSignaling {
 						const candidate = normalizeCandidate(message.data.msg.candidate);
 						if (candidate) candidates.push(candidate);
 					} else if (type === 'disconnect') {
+						this.logger.log(`The camera ended the stream before answering: ${describeSignal(message)}`);
 						finish(new Error('The camera ended the stream'));
+					} else {
+						// A camera that refuses the stream (as when too many people watch) says so here.
+						this.logger.log(`The camera sent an unexpected message before answering: ${describeSignal(message)}`);
 					}
 				},
 			});
@@ -164,19 +184,56 @@ export default class TuyaSignaling {
 		const result = await answer;
 		this.logger.debug('Camera answered');
 		this.active.set(sessionId, { topic, ids });
+		const onEnded = request.onEnded;
+		if (onEnded) {
+			this.streams.set(sessionId, {
+				onMessage: message => {
+					if (message.data.header.type !== 'disconnect') return;
+					this.logger.log('The camera ended the stream');
+					this.streams.delete(sessionId);
+					this.active.delete(sessionId);
+					onEnded();
+				},
+			});
+		}
 
-		// Ask for the wanted stream once the viewer has had a moment to connect: 0 is HD, 1 is SD.
+		// Ask for the wanted stream once the viewer has had a moment to connect.
 		const quality = request.quality ?? 'hd';
 		setTimeout(() => {
-			this.logger.debug(`Asking for ${quality.toUpperCase()}`);
-			const cmdValue = quality === 'sd' ? 1 : 0;
-			const resolution = signalMessage(controlProtocol, 'resolution', ids, { mode: 'webrtc', cmdValue });
-			client.publishAsync(topic, JSON.stringify(resolution), { qos: 1 }).catch(error => {
-				this.logger.log(`Asking for ${quality.toUpperCase()} failed: ${(error as Error).message ?? String(error)}`);
-			});
+			void this.publishResolution(client, topic, ids, quality);
 		}, 3_000);
 
 		return result;
+	}
+
+	/**
+	 * Switches a running stream to the HD or SD stream; the camera carries on under a new stream id. Resolves whether
+	 * the message went out.
+	 */
+	public async setQuality(sessionId: string, quality: 'hd' | 'sd'): Promise<boolean> {
+		const stream = this.active.get(sessionId);
+		const client = this.client;
+		if (!stream || !client?.connected) return false;
+		return this.publishResolution(client, stream.topic, stream.ids, quality);
+	}
+
+	/** Asks the camera for the HD (0) or SD (1) stream. Resolves whether the message went out. */
+	private async publishResolution(
+		client: MqttClient,
+		topic: string,
+		ids: Parameters<typeof signalMessage>[2],
+		quality: 'hd' | 'sd',
+	): Promise<boolean> {
+		this.logger.debug(`Asking for ${quality.toUpperCase()}`);
+		const cmdValue = quality === 'sd' ? 1 : 0;
+		const resolution = signalMessage(controlProtocol, 'resolution', ids, { mode: 'webrtc', cmdValue });
+		try {
+			await client.publishAsync(topic, JSON.stringify(resolution), { qos: 1 });
+			return true;
+		} catch (error) {
+			this.logger.log(`Asking for ${quality.toUpperCase()} failed: ${(error as Error).message ?? String(error)}`);
+			return false;
+		}
 	}
 
 	/**
@@ -186,6 +243,7 @@ export default class TuyaSignaling {
 	public async endStream(sessionId: string): Promise<boolean> {
 		const stream = this.active.get(sessionId);
 		this.active.delete(sessionId);
+		this.streams.delete(sessionId);
 		const client = this.client;
 		if (!stream || !client?.connected) return false;
 		return this.publishDisconnect(client, stream.topic, stream.ids);

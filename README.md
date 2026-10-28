@@ -72,7 +72,10 @@ Open the camera on the device to watch. Homey sends the viewer's WebRTC offer to
 for a stream through Tuya's MQTT broker (as the Philips app does). The monitors stamp every RTP packet with the same
 timestamp, which makes players stutter, so by default the app relays the stream (werift, loaded only while someone
 watches): it receives the video from the monitor, rewrites the timestamps from the wall clock, re-sends the SPS/PPS
-before keyframes, and sends it on to Homey, without decoding anything. The **Smooth video** device setting turns the
+before keyframes, and sends it on to Homey, without decoding anything. Philips limits how many people can watch a monitor at
+once, depending on the model (three on the SCD923 and SCD973), counting the Philips app on every phone. The relay
+takes one stream from the monitor and passes it on to every Homey viewer (up to three), so Homey takes just one of
+those places. The **Smooth video** device setting turns the
 relay off, and the monitor then streams straight to Homey. Audio is receive-only, so watching doesn't interrupt a lullaby. Privacy mode turns the
 camera off, so it blocks video too.
 
@@ -105,7 +108,8 @@ Copy `env.example.json` to `env.json` and fill in `OBFUSCATION_KEY` (any long ra
 | --- | --- |
 | `app.mts` | the app: logger, diagnostics setting, `createTuyaClient()`, and packing the session devices keep |
 | `TuyaClient.mts` | the Tuya mobile API: signed requests, the two-step sign-in with data-center routing, cameras, state, commands |
-| `VideoRelay.mts` | the smooth-video relay: two werift peer connections (camera, viewer) with restamping in between |
+| `CameraSession.mts` | the smooth-video relay: one werift peer connection to the camera, restamped once and shared by every Homey viewer |
+| `VideoRelay.mts` | loading werift, and one Homey viewer's peer connection of a camera session |
 | `utils/rtp-restamp.mts` | restamping video per frame and audio per packet, and re-sending SPS/PPS before keyframes |
 | `utils/rtp-reorder.mts` | putting the camera's RTP packets back in sequence order before the relay passes them on |
 | `utils/werift-cbc.mts` | the AES-CBC DTLS cipher werift lacks, the only kind an SCD973 on camera SDK 4.8.8 offers |
